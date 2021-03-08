@@ -22,6 +22,9 @@ class Harness:
         self.port_name = port
         self.connection = serial.CDCSerial(port)
 
+
+
+
     @classmethod
     def from_detect(cls):
         '''
