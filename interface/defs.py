@@ -14,7 +14,8 @@ endpoint = {
     "calllog": 9,
     "events": 10,
     "developerMode": 11,
-    "bluetooth":12
+    "bluetooth": 12,
+    "usbSecurity": 13
 }
 
 method = {

@@ -133,7 +133,7 @@ class CDCSerial:
 
     def usb_lock(self):
         body = {
-            "usbSecurity": "usbLock"
+            "usbSecurityStatus": "locked"
         }
 
         ret = self.write(self.__wrap_message(body))
@@ -141,7 +141,7 @@ class CDCSerial:
 
     def usb_unlock(self):
         body = {
-            "usbSecurity": "usbUnlock"
+            "usbSecurityStatus": "unlocked"
         }
 
         ret = self.write(self.__wrap_message(body))
