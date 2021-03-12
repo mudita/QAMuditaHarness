@@ -120,3 +120,16 @@ class Harness:
         body = {"tethering": state}
         log.info(f"Set tethering state to: {state}")
         return self.endpoint_request("developerMode", "put", body)
+
+    def get_application_stack(self):
+        body = {"applicationManager": True, "applicationStack": True }
+        return self.endpoint_request("developerMode", "get", body)["body"]["applicationStack"]
+
+    def start_application(self, app_name):
+        body = {"applicationManager": True, "startApplication": app_name }
+        return self.endpoint_request("developerMode", "put", body)
+
+    def switch_back_application(self):
+        body = {"applicationManager": True, "switchBack": True }
+        return self.endpoint_request("developerMode", "put", body)
+
