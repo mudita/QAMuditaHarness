@@ -28,12 +28,14 @@ method = {
 status = {
     "OK": 200,
     "Accepted": 202,
+    "NoContent": 204,
     "SeeOther": 303,
     "BadRequest": 400,
     "Forbidden": 403,
     "NotFound": 404,
     "NotAcceptable": 406,
     "InternalServerError": 500,
+    "NotImplemented": 501,
 }
 
 key_codes = {
