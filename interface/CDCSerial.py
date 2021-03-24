@@ -26,7 +26,7 @@ class CDCSerial:
         self.header_length = 10
         while timeout != 0:
             try:
-                self.serial = serial.Serial(port_name, baudrate=115200, timeout=10)
+                self.serial = serial.Serial(port_name, baudrate=460800, timeout=10)
                 self.serial.flushInput()
                 log.info(f"opened port {port_name}!")
                 break
