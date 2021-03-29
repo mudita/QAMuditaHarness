@@ -1,15 +1,23 @@
 # Copyright (c) 2017-2021, Mudita Sp. z.o.o. All rights reserved.
 # For licensing, see https://github.com/mudita/MuditaOS/LICENSE.md
-import time
-from enum import Enum
-
-from harness import utils, log
-from harness.interface import CDCSerial as serial
-from harness.interface.defs import key_codes, endpoint, method
-from harness.interface.CDCSerial import Keytype
-from harness.utils import send_keystoke, application_keypath, send_char, clear_last_char
-from harness.interface.error import TestError, Error
 import random
+
+from . import utils
+from . import log
+
+from .utils import send_keystoke
+from .utils import application_keypath
+from .utils import send_char
+from .utils import clear_last_char
+
+from .interface import CDCSerial as serial
+
+from .interface.error import TestError
+from .interface.error import Error
+
+from .interface.defs import key_codes
+from .interface.defs import endpoint
+from .interface.defs import method
 
 
 class Harness:
@@ -108,10 +116,10 @@ class Harness:
             if not end_loop_counter > 0:
                 raise LookupError("Filed to switch to {}".format(app_desktop))
             log.info("Not on the Application Desktop, fnRight.")
-            self.connection.send_key_code(key_codes["fnRight"], Keytype.long_press)
+            self.connection.send_key_code(key_codes["fnRight"], serial.Keytype.long_press)
             end_loop_counter -=  1
 
-        self.connection.send_key_code(key_codes["fnRight"], Keytype.long_press)
+        self.connection.send_key_code(key_codes["fnRight"], serial.Keytype.long_press)
         self.connection.send_key_code(key_codes["right"])
         self.connection.send_key_code(key_codes["enter"])
 

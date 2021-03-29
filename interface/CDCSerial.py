@@ -1,15 +1,14 @@
 # Copyright (c) 2017-2020, Mudita Sp. z.o.o. All rights reserved.
 # For licensing, see https://github.com/mudita/MuditaOS/LICENSE.md
 import time
-from random import randrange
-
 import serial
 import json
 import logging
 from enum import Enum
+from random import randrange
 
-from harness.interface.defs import endpoint, method, status
-from harness.interface.error import TestError, Error
+from .defs import endpoint, method
+from .error import TestError, Error
 
 log = logging.getLogger(__name__)
 
