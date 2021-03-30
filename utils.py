@@ -49,6 +49,12 @@ application_keypath = {
         "up",
         "left",
         "enter"
+    ],
+    "ICE call": [
+        "fnLeft",
+        "fnLeft",
+        "enter",
+        "fnLeft"
     ]
 }
 
@@ -263,6 +269,12 @@ def send_number(number: str, connection):
             connection.send_key_code(int(digit))
             time.sleep(0.3)
 
+def validate_pin(pin):
+    if len(pin) != 4:
+        raise RuntimeError("Pin length not equal to 4")
+    for digit in pin:
+        if not isinstance(digit, int):
+            raise TypeError("Pin could be only set of digits")
 
 ### timeout from https://stackoverflow.com/a/601168/5752094
 

@@ -18,11 +18,11 @@ from .interface.error import Error
 from .interface.defs import key_codes
 from .interface.defs import endpoint
 from .interface.defs import method
+from .interface.defs import default_pin
 
 
 class Harness:
     connection = None
-    is_phone_unlocked = False
     is_echo_mode = False
     port_name = ''
 
@@ -55,25 +55,45 @@ class Harness:
     def lock_usb(self):
         self.connection.usb_lock()
 
-    def unlock_phone(self):
+    def is_phone_locked(self):
+        return self.connection.is_phone_locked()
+
+
+    def enter_passcode(self, pin=default_pin):
+        utils.validate_pin(pin)
         if self.connection.is_phone_locked():
             self.connection.send_key_code(key_codes["enter"])
             self.connection.send_key_code(key_codes["#"])
-            if self.connection.is_phone_locked():
-                self.connection.send_key_code(3)
-                self.connection.send_key_code(3)
-                self.connection.send_key_code(3)
-                self.connection.send_key_code(3)
+            for digit in pin:
+                self.connection.send_key_code(digit)
+
+    def lock_phone(self):
+        if not self.is_phone_locked():
+            if not self.get_application_name() == "ApplicationDesktop":
+                self.return_to_home_screen()
+            self.connection.send_key_code(key_codes["#"], serial.Keytype.long_press)
+            log.info("Phone locked")
+        else:
+            log.info("Phone already locked")
+            
+    def unlock_phone(self):
+        if self.is_phone_locked():
+            self.enter_passcode()
             log.info("Phone unlocked")
         else:
             log.info("Phone already unlocked")
-        self.is_phone_unlocked = True
 
     def with_phone_unlocked(self, func):
-        if not self.is_phone_unlocked:
+        if self.is_phone_locked():
             self.unlock_phone()
 
         func(self.connection)
+
+    def return_to_last_screen(self):
+        self.connection.send_key_code(key_codes["fnRight"])
+
+    def return_to_home_screen(self):
+        self.connection.send_key_code(key_codes["fnRight"], serial.Keytype.long_press)
 
     def connection_echo_mode_on(self):
         if self.connection.enable_echo_mode():
