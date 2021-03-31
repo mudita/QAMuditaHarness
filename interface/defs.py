@@ -56,6 +56,7 @@ key_codes = {
     "*": ord('*'),
 }
 
+default_pin = [3, 3, 3, 3]
 
 class SMSType(Enum):
     DRAFT = 0x01
