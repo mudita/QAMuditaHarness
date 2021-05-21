@@ -49,12 +49,6 @@ class Harness:
     def get_application_name(self):
         return self.connection.get_application_name()
 
-    def unlock_usb(self):
-        self.connection.usb_unlock()
-
-    def lock_usb(self):
-        self.connection.usb_lock()
-
     def is_phone_locked(self):
         return self.connection.is_phone_locked()
 
