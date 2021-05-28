@@ -124,11 +124,11 @@ class CDCSerial:
 
     def is_phone_locked(self):
         body = {
-            "isLocked": True
+            "phoneLocked": True
         }
 
         ret = self.write(self.__wrap_message(body))
-        return ret["body"]["isLocked"]
+        return ret["body"]["phoneLocked"]
 
     @staticmethod
     def find_Pures() -> str:
