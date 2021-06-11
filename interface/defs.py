@@ -5,7 +5,7 @@ from enum import Enum
 endpoint = {
     "deviceInfo": 1,
     "update": 2,
-    "filesystemUpload": 3,
+    "filesystem": 3,
     "backup": 4,
     "restore": 5,
     "factory": 6,
