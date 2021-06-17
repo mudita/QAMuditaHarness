@@ -52,7 +52,6 @@ class Harness:
     def is_phone_locked(self):
         return self.connection.is_phone_locked()
 
-
     def enter_passcode(self, pin=default_pin):
         utils.validate_pin(pin)
         if self.connection.is_phone_locked():
@@ -142,3 +141,12 @@ class Harness:
         body = {"tethering": state}
         log.info(f"Set tethering state to: {state}")
         return self.endpoint_request("developerMode", "put", body)
+
+    def press_fun_left(self):
+        self.connection.send_key_code(key_codes["fnLeft"])
+
+    def press_fun_right(self):
+        self.connection.send_key_code(key_codes["fnRight"])
+
+    def press_fun_center(self):
+        self.connection.send_key_code(key_codes["enter"])
