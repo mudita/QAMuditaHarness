@@ -150,3 +150,15 @@ class Harness:
 
     def press_fun_center(self):
         self.connection.send_key_code(key_codes["enter"])
+
+    def press_nav_left(self):
+        self.connection.send_key_code(key_codes["left"])
+
+    def press_nav_right(self):
+        self.connection.send_key_code(key_codes["right"])
+
+    def press_nav_up(self):
+        self.connection.send_key_code(key_codes["up"])
+
+    def press_nav_down(self):
+        self.connection.send_key_code(key_codes["down"])
