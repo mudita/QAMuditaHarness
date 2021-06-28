@@ -66,3 +66,23 @@ class SMSType(Enum):
     QUEUED = 0x10
     INPUT = 0x12
     UNKNOWN = 0xFF
+
+class Application(str, Enum):
+    AlarmClock = "ApplicationAlarmClock"
+    Antenna = "ApplicationAntenna"
+    Calculator = "ApplicationCalculator"
+    Calendar = "ApplicationCalendar"
+    Call = "ApplicationCall"
+    Calllog = "ApplicationCallLog"
+    Clock = "ApplicationClock"
+    Desktop = "ApplicationDesktop"
+    Meditation = "ApplicationMeditation"
+    Messages = "ApplicationMessages"
+    MusicPlayer = "ApplicationMusicPlayer"
+    Notes = "ApplicationNotes"
+    Onboarding = "ApplicationOnBoarding"
+    Phonebook = "ApplicationPhonebook"
+    Settings = "ApplicationSettings"
+    SettingsNew = "ApplicationSettingsNew"
+    SpecialInput = "ApplicationSpecialInput"
+
