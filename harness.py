@@ -19,6 +19,8 @@ from .interface.defs import key_codes
 from .interface.defs import endpoint
 from .interface.defs import method
 from .interface.defs import default_pin
+from .interface.defs import Method, Endpoint
+from .request import Transaction, Request
 
 
 class Harness:
@@ -110,6 +112,28 @@ class Harness:
 
     def send_number(self, number: str):
         utils.send_number(number, self.connection)
+
+    def request(self, endpoint: Endpoint, method: Method, data: dict) -> Transaction:
+        '''
+        sends data to device and gets response
+        the same as endpoint_request except:
+            - works on types
+            - throws in case of error
+            - provides execution time
+        use example:
+        ```
+            body = {"txID": txID, "chunkNo": chunkNo, "data": data}
+            ret = harness.request(Endpoint.FILESYSTEM, Method.PUT, body)
+            assert ret.response.body["txID"] != 0
+        ```
+        '''
+        t = Transaction(Request(endpoint.value, method.value, data, random.randint(1, 32000)))
+        t.accept(self.connection.write(t.request.to_dict()))
+        r, w = self.connection.get_timing()
+        r = r.elapsed()
+        w = w.elapsed()
+        t.set_elapsed(r, w)
+        return t
 
     def endpoint_request(self, ep_name: str, met: str, body: dict) -> dict:
         ret = self.connection.write({
