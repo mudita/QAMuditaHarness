@@ -123,6 +123,10 @@ class Harness:
         '''
         t = Transaction(Request(endpoint.value, method.value, data, random.randint(1, 32000)))
         t.accept(self.connection.write(t.request.to_dict()))
+        r, w = self.connection.get_timing()
+        r = r.elapsed()
+        w = w.elapsed()
+        t.set_elapsed(r, w)
         return t
 
     def endpoint_request(self, ep_name: str, met: str, body: dict) -> dict:

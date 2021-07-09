@@ -54,3 +54,7 @@ class Transaction:
     def accept(self, resp: dict) -> None:
         self.response = Response(**resp)
         self.response.validate()
+
+    def set_elapsed(self, send, read):
+        self.send_time = send
+        self.read_time = read
