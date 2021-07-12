@@ -18,12 +18,38 @@ endpoint = {
     "usbSecurity": 13
 }
 
+
+class Endpoint(Enum):
+    INVALID = 0
+    DEVICEINFO = 1
+    UPDATE = 2
+    FILESYSTEM = 3
+    BACKUP = 4
+    RESTORE = 5
+    FACTORY = 6
+    CONTACTS = 7
+    MESSAGES = 8
+    CALLLOG = 9
+    EVENTS = 10
+    DEVELOPERMODE = 11
+    BLUETOOTH = 12
+    USBSECURITY = 13
+
+
 method = {
     "get": 1,
     "post": 2,
     "put": 3,
     "del": 4
 }
+
+
+class Method(Enum):
+    GET = 1
+    POST = 2
+    PUT = 3
+    DEL = 4
+
 
 status = {
     "OK": 200,
@@ -37,6 +63,20 @@ status = {
     "InternalServerError": 500,
     "NotImplemented": 501,
 }
+
+
+class Status(Enum):
+    OK = 200
+    Accepted = 202
+    NoContent = 204
+    SeeOther = 303
+    BadRequest = 400
+    Forbidden = 403
+    NotFound = 404
+    NotAcceptable = 406
+    InternalServerError = 500
+    NotImplemented = 501
+
 
 key_codes = {
     "left": ord('a'),

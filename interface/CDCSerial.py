@@ -9,6 +9,7 @@ from random import randrange
 
 from .defs import endpoint, method
 from .error import TestError, Error
+from dataclasses import dataclass
 
 log = logging.getLogger(__name__)
 
@@ -16,6 +17,24 @@ log = logging.getLogger(__name__)
 class Keytype(Enum):
     long_press = 0
     short_press = 1
+
+
+@dataclass
+class Stats():
+    start: int
+    end: int
+
+    def elapsed(self):
+        return self.end - self.start
+
+
+def timed(foo):
+    def wrap(*args, **kwargs):
+        start = time.time()
+        ret = foo(*args, **kwargs)
+        end = time.time()
+        return [ret, Stats(start, end)]
+    return wrap
 
 
 class CDCSerial:
@@ -60,6 +79,7 @@ class CDCSerial:
         json_dump = json.dumps(json_data)
         return "#%09d%s" % (len(json_dump), json_dump)
 
+    @timed
     def read(self, length):
         header = self.readRaw(length)
         payload_length = int(header[1:])
@@ -69,12 +89,16 @@ class CDCSerial:
     def readRaw(self, length):
         return self.serial.read(length).decode()
 
+    def get_timing(self):
+        return [self.time_to_send, self.time_to_read]
+
     def write(self, msg, timeout=30):
         message = self.__build_message(msg)
-        self.writeRaw(message)
-        result = self.read(self.header_length)
+        ignore, self.time_to_send = self.writeRaw(message)
+        result, self.time_to_read = self.read(self.header_length)
         return json.loads(result)
 
+    @timed
     def writeRaw(self, message, timeout=30):
         self.serial.write(message.encode())
         self.serial.timeout = timeout
