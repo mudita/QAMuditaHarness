@@ -106,3 +106,15 @@ class SMSType(Enum):
     QUEUED = 0x10
     INPUT = 0x12
     UNKNOWN = 0xFF
+
+
+class PureLogLevel(Enum):
+    '''
+    PurePhone log level
+    '''
+    LOGTRACE = 0
+    LOGDEBUG = 1
+    LOGINFO = 2
+    LOGWARN = 3
+    LOGERROR = 4
+    LOGFATAL = 5

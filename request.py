@@ -38,7 +38,7 @@ class Response:
         method used to throw an error - so that we would actually check
         if something was not done properly, or there was HTTP error
         '''
-        if (self.status is not Status.OK.value) and (self.status is not Status.Accepted.value):
+        if (self.status is not Status.OK.value) and (self.status is not Status.Accepted.value) and (self.status is not Status.NoContent.value):
             raise TransactionError(self.status)
 
 
