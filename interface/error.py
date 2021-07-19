@@ -9,6 +9,7 @@ class Error(IntEnum):
     TEST_FAILED = 3,
     VERSION_MISMATCH = 4,
     OTHER_ERROR = 5
+    PURE_REBOOT = 6
 
 
 class TestError(Exception):
@@ -24,3 +25,6 @@ class TestError(Exception):
     def get_error_code(self):
         return int(self.error_code)
 
+
+class ComError(Exception):
+    pass

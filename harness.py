@@ -70,7 +70,7 @@ class Harness:
             log.info("Phone locked")
         else:
             log.info("Phone already locked")
-            
+
     def unlock_phone(self):
         if self.is_phone_locked():
             self.enter_passcode()
