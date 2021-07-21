@@ -63,11 +63,17 @@ class CDCSerial:
                     raise TestError(Error.PORT_NOT_FOUND)
 
     def watch_port(self):
-        self.watch = adapters.Inotify()
+        '''
+        inotify in python uses epoll to check notifications
+        set insignificant timeout of 0.01ms instead of 1s default
+        '''
+        self.watch = adapters.Inotify(block_duration_s=0.0)
         self.watch.add_watch(self.port_name, IN_ATTRIB)
 
     def watch_port_status(self):
-        for event in self.watch.event_gen(timeout_s=0, yield_nones=False):
+        for event in self.watch.event_gen():
+            if event is None:
+                return
             (_, type_names, path, filename) = event
             log.debug(f"inotify {path}/{filename} event: {type_names}")
             raise TestError(Error.PURE_REBOOT)
