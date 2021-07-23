@@ -133,7 +133,7 @@ def put_file(harness: Harness, file: str, where: str):
         file_data = l_file.read()
         fileCrc32 = format((binascii.crc32(file_data) & 0xFFFFFFFF), '08x')
 
-    ret = FsInitPut(where, file, fileSize, fileCrc32).run(harness)
+    ret = FsInitPut(where, os.path.split(file)[-1], fileSize, fileCrc32).run(harness)
     chunkNo = 1
 
     with open(file, 'rb') as l_file:
