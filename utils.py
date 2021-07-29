@@ -10,44 +10,42 @@ from .interface.defs import key_codes
 # assuming that the harness is actually in the menu
 application_keypath = {
     "calllog": [
+        "left",
         "enter"
     ],
     "contacts": [
-        "right",
         "enter"
     ],
     "messages": [
-        "right",
         "right",
         "enter"
     ],
     "music": [
         "down",
+        "left",
         "enter"
     ],
     "meditation": [
         "down",
-        "right",
         "enter"
     ],
     "settings": [
         "down",
         "right",
-        "right",
         "enter"
     ],
     "tools": [
         "up",
+        "left",
         "enter"
     ],
     "alarm": [
         "up",
-        "right",
         "enter"
     ],
     "calendar": [
         "up",
-        "left",
+        "right",
         "enter"
     ],
     "ICE call": [
