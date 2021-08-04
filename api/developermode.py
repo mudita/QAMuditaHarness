@@ -16,21 +16,6 @@ class PhoneModeLock(GenericTransaction):
         self.response = GenericResponse(response)
 
 
-class Reboot(Enum):
-    UPDATE = True
-
-
-class PhoneReboot(GenericTransaction):
-    '''
-    Requests for Phone reboot, right now with "update" reason
-    '''
-    def __init__(self, type: Reboot):
-        self.request = Request(Endpoint.DEVELOPERMODE, Method.POST, {"update": True, "reboot": type.value})
-
-    def setResponse(self, response: Response):
-        self.response = GenericResponse(response)
-
-
 class SetLog(GenericTransaction):
     '''
     Sets log level for selected service, can be used to limit spamming logs on phone
