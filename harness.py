@@ -24,13 +24,17 @@ from .request import Transaction, Request
 
 
 class Harness:
-    connection = None
+    '''
+    harness class
+    WARN: please see that variables below are not class local
+    '''
     is_echo_mode = False
     port_name = ''
 
     def __init__(self, port):
         self.port_name = port
         self.connection = serial.CDCSerial(port)
+        self.phone_mode_lock = False
 
     @classmethod
     def from_detect(cls):
@@ -48,11 +52,21 @@ class Harness:
     def get_connection(self):
         return self.connection
 
+    def set_connection(self, connection):
+        Harness.connection = connection
+        self.connection = connection
+
     def get_application_name(self):
         return self.connection.get_application_name()
 
     def is_phone_locked(self):
         return self.connection.is_phone_locked()
+
+    def set_phone_mode_lock_state(self, enabled: bool):
+        self.phone_mode_lock = enabled
+
+    def is_phone_mode_locked(self):
+        return self.phone_mode_lock
 
     def enter_passcode(self, pin=default_pin):
         utils.validate_pin(pin)

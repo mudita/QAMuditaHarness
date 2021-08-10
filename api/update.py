@@ -17,3 +17,5 @@ class PhoneReboot(GenericTransaction):
     def setResponse(self, response: Response):
         self.response = GenericResponse(response)
 
+    def onRun(self, harness):
+        harness.reboot_requested = True

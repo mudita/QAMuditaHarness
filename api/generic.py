@@ -39,7 +39,14 @@ class GenericTransaction:
     def setResponse(self, response: Response):
         raise TypeError("Child class has to implement setResponse")
 
+    def onRun(self, harness: Harness):
+        '''
+        Method to call before run - for children to be able to call before sth happened
+        '''
+        pass
+
     def run(self, harness: Harness):
+        self.onRun(harness)
         ret = harness.request(self.request.endpoint, self.request.method, self.request.body)
         self.setResponse(ret.response)
         return self.getResponse()

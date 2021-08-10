@@ -8,13 +8,17 @@ class PhoneModeLock(GenericTransaction):
     '''
     disable phoneLockCodeEnabled
     for some reason unlocks developer mode too (without it we can have 403 codes on calls to it)
+    INFO: sets phone_mode_lock state in current harness session
     '''
     def __init__(self, enable: bool):
+        self.enabled = enable
         self.request = Request(Endpoint.DEVELOPERMODE, Method.PUT, {"phoneLockCodeEnabled": enable})
 
     def setResponse(self, response: Response):
         self.response = GenericResponse(response)
 
+    def onRun(self, harness):
+        harness.set_phone_mode_lock_state(self.enabled)
 
 class SetLog(GenericTransaction):
     '''
