@@ -47,29 +47,35 @@ class HarnessCache:
         cls.retry_time_s = retry_time_s
         cls.port = port
 
-        while retries > 0:
-            retries = retries - 1
-            if port is None:
-                log.info("no port provided! trying automatic detection")
-                HarnessCache.harness = get_harness_automatic(cls.timeout, cls.retry_time_s)
-            else:
-                log.info(f"port provided {port}")
-                HarnessCache.harness = get_harness_by_port_name(cls.port, cls.timeout, cls.retry_time_s)
-            if HarnessCache.is_operational() is not True:
-                cls.harness = None
-                if retries == 0:
-                    raise ValueError("harness not ready for use")
+        with Timeout.limit(seconds=timeout):
+            while retries > 0:
+                retries = retries - 1
+                if port is None:
+                    log.info("no port provided! trying automatic detection")
+                    HarnessCache.harness = get_harness_automatic(cls.timeout, cls.retry_time_s)
+                else:
+                    log.info(f"port provided {port}")
+                    HarnessCache.harness = get_harness_by_port_name(cls.port, cls.timeout, cls.retry_time_s)
+                if HarnessCache.is_operational() is not True:
+                    cls.harness = None
+                    if retries == 0:
+                        raise ValueError("harness not ready for use")
+                else:
+                    break
+                import time
+                time.sleep(cls.retry_time_s)
+        if cls.harness is None:
+            raise ValueError("port not found!")
         return cls.harness
 
     @classmethod
-    def reset_phone(cls, reboot_cause: Reboot) -> Harness:
+    def reset_phone(cls, reboot_cause: Reboot, reboot_time=6 * 60) -> Harness:
         '''
         Reset the phone flow:
             * reboot_time - time we wait till we say that reboot failed = 6 min default
             * time_to_reboot - time we wait till phone accepts reboot request and closes itself = 60s default
             * reboot_cause - we can reboot to updater, or any other selected in Reboot enum
         '''
-        reboot_time = 6 * 60
         time_to_reboot = 60
         if cls.harness is None:
             raise ValueError("No harness in cache")
@@ -77,7 +83,7 @@ class HarnessCache:
         PhoneReboot(reboot_cause).run(cls.harness)
         if not cls.harness.connection.watch_port_reboot(time_to_reboot):
             raise ValueError(f"Phone not rebooted in {reboot_time}")
-        cls.harness = cls.get(cls.port, reboot_time, 30)
+        cls.harness = cls.get(cls.port, reboot_time, 1, 30)
 
         if not cls.harness.is_phone_locked():
             cls.harness.unlock_phone()

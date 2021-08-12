@@ -121,23 +121,25 @@ class FsPutChunk(GenericTransaction):
         self.response = FsPutChunkResponse(response)
 
 
-def put_file(harness: Harness, file: str, where: str):
+def put_file(harness: Harness, file: str, where: str, filename: str = None):
     '''
     Complete function to put file to Pure:
         - Request to init get file: FsInitPut
         - as many as it takes chunk transmissions: FsPutChunk (via get_transfer)
     printing pretty progress bar as it goes on
     '''
+    if filename is None:
+        filename = os.path.split(file)[-1]
     fileSize = os.path.getsize(file)
     with open(file, 'rb') as l_file:
         file_data = l_file.read()
         fileCrc32 = format((binascii.crc32(file_data) & 0xFFFFFFFF), '08x')
 
-    ret = FsInitPut(where, os.path.split(file)[-1], fileSize, fileCrc32).run(harness)
+    ret = FsInitPut(where, filename, fileSize, fileCrc32).run(harness)
     chunkNo = 1
 
     with open(file, 'rb') as l_file:
-        with tqdm(total=fileSize, unit='B', unit_scale=True) as p_bar:
+        with tqdm(total=fileSize, unit='B', unit_scale=True, desc=f"{file} -> {where}{filename}") as p_bar:
             for chunk in iter(partial(l_file.read, ret.chunkSize), b''):
                 FsPutChunk(ret.txID, chunkNo, base64.standard_b64encode(
                     chunk).decode()).run(harness)
