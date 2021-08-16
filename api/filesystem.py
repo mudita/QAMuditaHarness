@@ -1,7 +1,7 @@
-from harness.harness import Harness
-from harness.request import Request, Response
-from harness.interface.defs import Endpoint, Method
-from harness import log
+from ..harness import Harness
+from ..request import Request, Response
+from ..interface.defs import Endpoint, Method
+from .. import log
 import base64
 from tqdm import tqdm
 import os
