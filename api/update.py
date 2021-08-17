@@ -1,11 +1,12 @@
-from harness.request import Request, Response
-from harness.interface.defs import Endpoint, Method, PureLogLevel
+from ..request import Request, Response
+from ..interface.defs import Endpoint, Method
 from enum import Enum
 from .generic import GenericResponse, GenericTransaction
 
 
 class Reboot(Enum):
     UPDATE = True
+
 
 class PhoneReboot(GenericTransaction):
     '''
@@ -17,3 +18,5 @@ class PhoneReboot(GenericTransaction):
     def setResponse(self, response: Response):
         self.response = GenericResponse(response)
 
+    def onRun(self, harness):
+        harness.reboot_requested = True
