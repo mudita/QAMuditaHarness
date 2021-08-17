@@ -22,14 +22,16 @@ class HarnessCache:
     @classmethod
     def is_operational(cls) -> bool:
         '''
-        Check with timeout if endpoitnt is initialized by sending request that we are
+        Check with timeout if endpoint is initialized by sending request that we are
         sure that exists and will have response
         '''
+        # Timeout which is a max value to request data, it should happen in few seconds
+        operational_timeout = 305
         if cls.harness is None:
             raise ValueError("No harness in cache")
         testbody = {"ui": True, "getWindow": True}
         result = None
-        with Timeout.limit(seconds=305):
+        with Timeout.limit(seconds=operational_timeout):
             while not result:
                 try:
                     result = cls.harness.endpoint_request("developerMode", "get", testbody)
@@ -83,7 +85,7 @@ class HarnessCache:
         PhoneReboot(reboot_cause).run(cls.harness)
         if not cls.harness.connection.watch_port_reboot(time_to_reboot):
             raise ValueError(f"Phone not rebooted in {reboot_time}")
-        cls.harness = cls.get(cls.port, reboot_time, 1, 30)
+        cls.harness = cls.get(cls.port, reboot_time, retry_time_s=1, retries=30)
 
         if not cls.harness.is_phone_locked():
             cls.harness.unlock_phone()
