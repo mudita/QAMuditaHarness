@@ -60,7 +60,7 @@ def get_transfer(harness: Harness, logDir: str, fileName: str, rxID, fileSize, c
                 logFile.write(ret.bin_data)
 
 
-def get_file(harness: Harness, file_pure: str, file_local, path_pure: str = "/sys/user", file_user=""):
+def get_file(harness: Harness, file_pure: str, path_local, path_pure: str = "/sys/user", file_user=""):
     '''
     Complete function to get file:
         - Request to init get file: FsInitGet
@@ -69,9 +69,9 @@ def get_file(harness: Harness, file_pure: str, file_local, path_pure: str = "/sy
     '''
     if file_user == "":
         file_user = file_pure
-    file_local = os.path.abspath(file_local)
+    path_local = os.path.abspath(path_local)
     ret = FsInitGet(path_pure, file_pure).run(harness)
-    get_transfer(harness, file_local, file_user, ret.rxID, ret.fileSize, ret.chunkSize)
+    get_transfer(harness, path_local, file_pure, ret.rxID, ret.fileSize, ret.chunkSize)
     log.info(f"file {file_pure} complete")
 
 
@@ -80,8 +80,15 @@ def get_log_file(harness: Harness, log_dir: str):
     Function to download MuditaOS logs from system
     '''
     filename = "MuditaOS.log"
-    get_file(harness, filename, log_dir)
+    get_file(harness, filename, "", "/sys/user/logs", log_dir)
 
+def get_log_file_with_path(harness: Harness, filePath: str, log_save_dir: str):
+    '''
+    Function to download MuditaOS logs from system
+    '''
+    filename = os.path.basename(filePath)
+    path = os.path.dirname(filePath)
+    get_file(harness, filename, "", path, log_save_dir)
 
 class FsInitPutResponse(GenericResponse):
     def __init__(self, *args, **kwargs):

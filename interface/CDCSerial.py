@@ -134,7 +134,7 @@ class CDCSerial:
         return json.loads(result)
 
     @timed
-    def writeRaw(self, message, timeout=30):
+    def writeRaw(self, message, timeout=60):
         self.watch_port_status()
         to_write = message.encode()
         to_write_len = len(to_write)
