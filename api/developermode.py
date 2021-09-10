@@ -40,3 +40,35 @@ class GetLog(GenericTransaction):
 
     def setResponse(self, response: Response) -> GenericResponse:
         self.response = GenericResponse(response)
+
+
+class RemoveFile(GenericTransaction):
+    def __init__(self, filename: str) -> None:
+        self.filename = filename
+        self.request = Request(Endpoint.DEVELOPERMODE, Method.PUT, {"fs": True, "removeFile": filename})
+
+    def setResponse(self, response: Response) -> GenericResponse:
+        self.response = GenericResponse(response)
+
+class RenameFile(GenericTransaction):
+    def __init__(self, filename: str, destfilename: str) -> None:
+        self.filename = filename
+        self.destfilename = destfilename
+        self.request = Request(Endpoint.DEVELOPERMODE, Method.PUT, {"fs": True, "renameFile": filename, "destfilename": destfilename})
+
+    def setResponse(self, response: Response) -> GenericResponse:
+        self.response = GenericResponse(response)
+
+class ListFiles(GenericTransaction):
+    """
+    Returns list of the files available in a directory
+    """
+    def __init__(self, directory: str) -> None:
+        self.directory = directory
+        self.request = Request(Endpoint.DEVELOPERMODE, Method.GET, {"fs": True, "listDir": directory})
+
+    def setResponse(self, response: Response) -> GenericResponse:
+        self.response = GenericResponse(response)
+    
+    def getResponse(self) -> dict:
+        return self.response.response.body[self.directory]
