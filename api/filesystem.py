@@ -80,7 +80,10 @@ def get_file(harness: Harness, file_pure: str, path_local, path_pure: str = "/sy
     '''
     if file_user == "":
         file_user = file_pure
-    path_local = os.path.abspath(path_local)
+    path_local = os.path.join(os.path.abspath(path_local), '')
+    if not os.path.exists(path_local):
+        os.makedirs(path_local, exist_ok = True)
+
     ret = FsInitGet(path_pure, file_pure).run(harness)
     get_transfer(harness, path_local, file_pure, ret.rxID, ret.fileSize, ret.chunkSize)
     log.info(f"file {file_pure} complete")
@@ -99,7 +102,8 @@ def get_log_file_with_path(harness: Harness, filePath: str, log_save_dir: str):
     '''
     filename = os.path.basename(filePath)
     path = os.path.dirname(filePath)
-    get_file(harness, filename, "", path, log_save_dir)
+    log_save_dir = os.path.dirname(log_save_dir)
+    get_file(harness, filename, log_save_dir, path, "")
 
 class FsInitPutResponse(GenericResponse):
     def __init__(self, *args, **kwargs):
@@ -157,7 +161,7 @@ def put_file(harness: Harness, file: str, where: str, filename: str = None):
     chunkNo = 1
 
     with open(file, 'rb') as l_file:
-        with tqdm(total=fileSize, unit='B', unit_scale=True, desc=f"{file} -> {where}{filename}") as p_bar:
+        with tqdm(total=fileSize, unit='B', unit_scale=True, desc=f"{file} -> {where}/{filename}") as p_bar:
             for chunk in iter(partial(l_file.read, ret.chunkSize), b''):
                 FsPutChunk(ret.txID, chunkNo, base64.standard_b64encode(
                     chunk).decode()).run(harness)
