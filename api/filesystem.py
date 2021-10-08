@@ -1,3 +1,4 @@
+from harness.interface.error import TestError, Error
 from ..harness import Harness
 from ..request import Request, Response
 from ..interface.defs import Endpoint, Method
@@ -5,7 +6,7 @@ from .. import log
 import base64
 from tqdm import tqdm
 import os
-import binascii
+import zlib
 from functools import partial
 from .generic import GenericResponse, GenericTransaction
 
@@ -16,6 +17,8 @@ class FsInitResponse(GenericResponse):
         self.rxID = self.response.body["rxID"]
         self.chunkSize = self.response.body["chunkSize"]
         self.fileSize = self.response.body["fileSize"]
+        if "fileCrc32" in self.response.body:
+            log.debug(f'Expected CRC32 {self.response.body["fileCrc32"]}')
 
 
 class FsInitGet(GenericTransaction):
@@ -33,6 +36,9 @@ class FsGetChunkResponse(GenericResponse):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.bin_data = base64.standard_b64decode(self.response.body["data"][0:-1])
+        self.fileCrc32 = ""
+        if "fileCrc32" in self.response.body:
+            self.fileCrc32 = self.response.body["fileCrc32"]
 
 
 class FsGetChunk(GenericTransaction):
@@ -51,6 +57,7 @@ def get_transfer(harness: Harness, logDir: str, fileName: str, rxID, fileSize, c
     Incomplete function to get file - transfering data chunks only
     '''
     totalChunks = int(((fileSize + chunkSize - 1) / chunkSize))
+    runningCrc32 = 0
     log.info(f'Transfering {fileName} to {logDir}:')
     with open(os.path.join(logDir, fileName), 'wb') as logFile:
         with tqdm(total=fileSize, unit='B', unit_scale=True) as p_bar:
@@ -58,6 +65,10 @@ def get_transfer(harness: Harness, logDir: str, fileName: str, rxID, fileSize, c
                 p_bar.update(chunkSize)
                 ret = FsGetChunk(rxID, n).run(harness)
                 logFile.write(ret.bin_data)
+                runningCrc32 = zlib.crc32(ret.bin_data, runningCrc32)
+
+            runningCrc32 = format((runningCrc32 & 0xFFFFFFFF), '08x')
+            log.debug(f'Expected CRC32 {ret.fileCrc32}, actual CRC32 {runningCrc32}')
 
 
 def get_file(harness: Harness, file_pure: str, path_local, path_pure: str = "/sys/user", file_user=""):
@@ -140,7 +151,7 @@ def put_file(harness: Harness, file: str, where: str, filename: str = None):
     fileSize = os.path.getsize(file)
     with open(file, 'rb') as l_file:
         file_data = l_file.read()
-        fileCrc32 = format((binascii.crc32(file_data) & 0xFFFFFFFF), '08x')
+        fileCrc32 = format((zlib.crc32(file_data) & 0xFFFFFFFF), '08x')
 
     ret = FsInitPut(where, filename, fileSize, fileCrc32).run(harness)
     chunkNo = 1
