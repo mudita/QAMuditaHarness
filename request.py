@@ -38,7 +38,7 @@ class Response:
         method used to throw an error - so that we would actually check
         if something was not done properly, or there was HTTP error
         '''
-        if (self.status is not Status.OK.value) and (self.status is not Status.Accepted.value) and (self.status is not Status.NoContent.value):
+        if ((self.status >= Status.BadRequest.value)):
             raise TransactionError(self.status)
 
 
@@ -57,8 +57,8 @@ class Request():
 
 class Transaction:
     '''
-    Class binding Request -> Response behaviour
-    and providing additionall data about that exchanange,
+    Class binding Request -> Response behavior
+    and providing additionall data about that exchange,
     which for now is execution time
     '''
     def __init__(self, request: Request):
