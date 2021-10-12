@@ -1,4 +1,4 @@
-from harness.interface.error import TestError, Error
+from ..interface.error import TestError, Error
 from ..harness import Harness
 from ..request import Request, Response
 from ..interface.defs import Endpoint, Method
