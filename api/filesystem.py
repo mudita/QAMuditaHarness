@@ -52,6 +52,38 @@ class FsGetChunk(GenericTransaction):
         self.response = FsGetChunkResponse(response)
 
 
+class FsRemoveFile(GenericTransaction):
+    def __init__(self, filename: str) -> None:
+        self.filename = filename
+        self.request = Request(Endpoint.FILESYSTEM, Method.DEL, {"removeFile": filename})
+
+    def setResponse(self, response: Response) -> GenericResponse:
+        self.response = GenericResponse(response)
+
+class FsRenameFile(GenericTransaction):
+    def __init__(self, filename: str, destFilename: str) -> None:
+        self.filename = filename
+        self.destfilename = destFilename
+        self.request = Request(Endpoint.FILESYSTEM, Method.PUT, {"renameFile": filename, "destFilename": destFilename})
+
+    def setResponse(self, response: Response) -> GenericResponse:
+        self.response = GenericResponse(response)
+
+class FsListFiles(GenericTransaction):
+    """
+    Returns list of the files available in a directory
+    """
+    def __init__(self, directory: str) -> None:
+        self.directory = directory
+        self.request = Request(Endpoint.FILESYSTEM, Method.GET, {"listDir": directory})
+
+    def setResponse(self, response: Response) -> GenericResponse:
+        self.response = GenericResponse(response)
+
+    def getResponse(self) -> dict:
+        return self.response.response.body[self.directory]
+
+
 def get_transfer(harness: Harness, logDir: str, fileName: str, rxID, fileSize, chunkSize):
     '''
     Incomplete function to get file - transfering data chunks only
