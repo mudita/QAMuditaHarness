@@ -150,6 +150,9 @@ class Harness:
         return t
 
     def endpoint_request(self, ep_name: str, met: str, body: dict) -> dict:
+        '''
+        This is legacy code - please do not use it
+        '''
         ret = self.connection.write({
             "endpoint": endpoint[ep_name],
             "method": method[met],
@@ -198,5 +201,6 @@ class Harness:
     def press_nav_up(self):
         self.connection.send_key_code(key_codes["up"])
 
-    def press_nav_down(self):
-        self.connection.send_key_code(key_codes["down"])
+    def press_nav_down(self, times=1):
+        for _ in range(times):
+            self.connection.send_key_code(key_codes["down"])

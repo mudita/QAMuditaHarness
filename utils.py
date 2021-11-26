@@ -294,9 +294,16 @@ class Timeout(Exception):
     @classmethod
     @contextmanager
     def limit(cls, seconds: int):
+        '''
+        function to timeout blocking requests in python after limited time
+        '''
         assert seconds >= 1, "Timeout must be at least 1 second !"
+
         def signal_handler(signum, frame):
-            raise Timeout("Timed out!")
+            if signum == signal.SIGALRM:
+                raise Timeout(f"timout on {frame}!")
+            else:
+                raise Exception(f"random signal: {signal} caught on {frame}")
 
         signal.signal(signal.SIGALRM, signal_handler)
         signal.alarm(seconds)
@@ -304,3 +311,14 @@ class Timeout(Exception):
             yield
         finally:
             signal.alarm(0)
+
+    @classmethod
+    def poll(cls, interval: float, max_time: int, foo, args=None, kwargs=None):
+        '''
+        function to poll for limited time and raise Timeout if required
+        '''
+        with cls.limit(max_time):
+            while 1:
+                if foo() if args is None and kwargs is None else foo(args) if args is not None and kwargs is None else foo(kwargs) if kwargs is not None and args is None else foo(args, kwargs):
+                    return
+                time.sleep(interval)

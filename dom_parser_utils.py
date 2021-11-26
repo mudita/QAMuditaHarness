@@ -1,4 +1,8 @@
 import time
+from .interface.defs import Method, Endpoint
+from .request import TransactionError
+from typing import Callable
+
 
 children_attr_name = 'Children'
 
@@ -6,7 +10,20 @@ children_attr_name = 'Children'
 def get_window_content(harness, sleep_before_dump_time=0):
     time.sleep(sleep_before_dump_time)
     body = {"ui": True, "getWindow": True}
-    return harness.endpoint_request("developerMode", "get", body)['body']['dom']
+    retval = None
+    try:
+        retval = harness.request(Endpoint.DEVELOPERMODE, Method.GET, body).response
+    except TransactionError as e:
+        if e.status == 406:
+            retval = harness.request(Endpoint.DEVELOPERMODE, Method.GET, body).response
+        else:
+            raise
+    if retval is None:
+        raise RuntimeError('dom was not requested!')
+    if 'dom' in retval.body:
+        return retval.body['dom']
+    else:
+        raise RuntimeError(f"dom dump failure with: {retval}")
 
 
 def item_contains(body: dict, attr_name, attr_value):
@@ -110,3 +127,67 @@ def get_direct_children_of_element(body: dict) -> list:
         for child in body[children_attr_name]:
             children.append(child)
     return children
+
+
+class DomNode:
+    dom_depth = 0
+
+    def __init__(self, data: dict):
+        if type(data) is not dict:
+            raise RuntimeError("DOM parsing error: bad typeY")
+        if len(data.keys()) == 0:
+            raise RuntimeError("DOM parsing error: bad empty dict")
+        # there is needless nesting here
+        self.type_name = list(data.keys())[0]
+        # log.debug("    " * (DomNode.dom_depth + 1) + f"parsing: {self.type_name}")
+        self.data = data[self.type_name]
+        self._set_params(self.data)
+        self.children = []
+        if self.children_count > 0:
+            self._populate_children(self.data)
+
+    def hasChildren(self):
+        return self.children is not None
+
+    def _set_params(self, data):
+        try:
+            self.active = data["Active"]        # bool
+            self.focus = data["Focus"]          # bool
+            self.type = data["ItemType"]        # int
+            self.visible = data["Visible"]      # bool
+            self.children_count = data['ChildrenCount']
+        except KeyError as e:
+            # log.error(f"invalid data to parse! lacking: {e} in {data}")
+            raise RuntimeError("cant parse dom")
+
+    def _populate_children(self, data):
+        self.children = []
+        if self.children_count > 0:
+            DomNode.dom_depth = DomNode.dom_depth + 1
+        for val in data['Children']:
+            self.children.append(DomNode(val))
+        if self.children_count > 0:
+            DomNode.dom_depth = DomNode.dom_depth - 1
+
+
+def find_all(root: DomNode, filter: Callable[[DomNode], bool]) -> list:
+    '''
+    filter out all elements meeting the requirements
+    '''
+    limit = 1000
+    li = []
+
+    def r(body: DomNode, filter: Callable):
+        nonlocal limit, li
+        limit = limit - 1
+        if limit == 0:
+            raise RuntimeError("DOM parsing hit recursion depth")
+        if body is None:
+            return
+        if filter(body):
+            li.append(body)
+        for v in body.children:
+            r(v, filter)
+
+    r(root, filter)
+    return li
