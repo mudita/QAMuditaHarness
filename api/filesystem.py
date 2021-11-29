@@ -117,7 +117,7 @@ def get_file(harness: Harness, file_pure: str, path_local, path_pure: str = "/sy
         os.makedirs(path_local, exist_ok = True)
 
     ret = FsInitGet(path_pure, file_pure).run(harness)
-    get_transfer(harness, path_local, file_pure, ret.rxID, ret.fileSize, ret.chunkSize)
+    get_transfer(harness, path_local, file_user, ret.rxID, ret.fileSize, ret.chunkSize)
     log.info(f"file {file_pure} complete")
 
 
