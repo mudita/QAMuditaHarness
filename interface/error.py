@@ -8,8 +8,11 @@ class Error(IntEnum):
     PORT_FILE_NOT_FOUND = 2,
     TEST_FAILED = 3,
     VERSION_MISMATCH = 4,
-    OTHER_ERROR = 5
-    PURE_REBOOT = 6
+    OTHER_ERROR = 5,
+    PURE_REBOOT = 6,
+    PURE_NOT_LOCKED = 7,
+    INCORRECT_PASSCODE_ACCEPTED = 8,
+    UNEXPECTED_TIME_LOCK = 9
 
 
 class TestError(Exception):
