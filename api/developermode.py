@@ -40,4 +40,3 @@ class GetLog(GenericTransaction):
 
     def setResponse(self, response: Response) -> GenericResponse:
         self.response = GenericResponse(response)
-
