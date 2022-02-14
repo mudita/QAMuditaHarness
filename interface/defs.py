@@ -34,6 +34,7 @@ class Endpoint(Enum):
     DEVELOPERMODE = 11
     BLUETOOTH = 12
     USBSECURITY = 13
+    OUTBOX = 14
 
 
 method = {
