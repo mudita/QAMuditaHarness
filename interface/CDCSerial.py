@@ -195,10 +195,11 @@ class CDCSerial:
         return ret["body"]["phoneLocked"]
 
     @staticmethod
-    def find_Pures() -> str:
+    def find_Devices() -> str:
         '''
-        Return a list of unique paths to all the Mudita Pure phones found connected to the system
+        Return a list of unique paths to all the Mudita devices found connected to the system
         '''
         import serial.tools.list_ports as list_ports
-        return [_.device for _ in list_ports.comports() if _.manufacturer == 'Mudita' and _.product == 'Mudita Pure']
+        return [_.device for _ in list_ports.comports() if _.manufacturer == 'Mudita' and
+                    (_.product == 'Mudita Pure' or _.product == 'Mudita Harmony')]
 
