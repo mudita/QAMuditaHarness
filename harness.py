@@ -42,7 +42,7 @@ class Harness:
         Try to instantiate from first detected device.
         Do not use this method if you need >1 unique devices.
         '''
-        found = serial.CDCSerial.find_Pures()
+        found = serial.CDCSerial.find_Devices()
         if found:
             port = found[0]
             return cls(port)
