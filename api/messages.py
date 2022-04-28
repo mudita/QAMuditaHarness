@@ -12,6 +12,12 @@ class ThreadsResponse(GenericResponse):
             self.nextPage = self.response.body["nextPage"]
 
 
+class ThreadByIdResponse(GenericResponse):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.thread = self.response.body
+
+
 class GetThreadsWithOffsetAndLimit(GenericTransaction):
     """
     Retrieve threads with offset and limit
@@ -27,6 +33,22 @@ class GetThreadsWithOffsetAndLimit(GenericTransaction):
 
     def setResponse(self, response: Response):
         self.response = ThreadsResponse(response)
+
+
+class GetThreadById(GenericTransaction):
+    """
+    Retrieve thread by thread ID
+    """
+
+    def __init__(self, threadID: int):
+        self.request = Request(Endpoint.MESSAGES, Method.GET,
+                               {
+                                   "category": "thread",
+                                   "threadID": threadID
+                               })
+
+    def setResponse(self, response: Response):
+        self.response = ThreadByIdResponse(response)
 
 
 class MarkThreadAsUnread(GenericTransaction):
