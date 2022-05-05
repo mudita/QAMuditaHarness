@@ -68,6 +68,22 @@ class MarkThreadAsUnread(GenericTransaction):
         self.response = GenericResponse(response)
 
 
+class DeleteThreadById(GenericTransaction):
+    """
+    Delete thread specified by ID
+    """
+
+    def __init__(self, threadID: int):
+        self.request = Request(Endpoint.MESSAGES, Method.DEL,
+                               {
+                                   "category": "thread",
+                                   "threadID": threadID
+                               })
+
+    def setResponse(self, response: Response):
+        self.response = GenericResponse(response)
+
+
 class MessagesCountResponse(GenericResponse):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
