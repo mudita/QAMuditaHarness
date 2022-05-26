@@ -7,6 +7,7 @@ class PhoneLockTimeResponse(GenericResponse):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.phoneLockTime = self.response.body["phoneLockTime"]
+        self.timeLeftToNextAttempt = self.response.body["timeLeftToNextAttempt"]
 
 
 class GetPhoneLockStatus(GenericTransaction):
