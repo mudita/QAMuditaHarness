@@ -232,10 +232,15 @@ class MessageTemplateResponse(GenericResponse):
         self.templateBody = self.response.body["templateBody"]
         self.templateID = self.response.body["templateID"]
 
+class AddTemplateResponse(GenericResponse):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.templateID = self.response.body["templateID"]
+
 
 class GetTemplatesCount(GenericTransaction):
     """
-    Get the count of messages
+    Get the count of templates
     """
 
     def __init__(self):
@@ -251,7 +256,7 @@ class GetTemplatesCount(GenericTransaction):
 
 class GetTemplatesWithOffsetAndLimit(GenericTransaction):
     """
-    Retrieve threads with offset and limit
+    Retrieve templates with offset and limit
     """
 
     def __init__(self, offset: int, limit: int):
@@ -268,7 +273,7 @@ class GetTemplatesWithOffsetAndLimit(GenericTransaction):
 
 class GetMessageTemplateById(GenericTransaction):
     """
-    Retrieve message by message ID
+    Retrieve template by message ID
     """
 
     def __init__(self, templateID: int):
@@ -284,7 +289,7 @@ class GetMessageTemplateById(GenericTransaction):
 
 class ChangeMessageTemplate(GenericTransaction):
     """
-    Mark thread as read/unread
+    Change message template
     """
 
     def __init__(self, templateID: int, templateBody: str):
@@ -301,7 +306,7 @@ class ChangeMessageTemplate(GenericTransaction):
 
 class AddMessageTemplate(GenericTransaction):
     """
-    Mark thread as read/unread
+    Add message template
     """
 
     def __init__(self, templateBody: str):
@@ -312,12 +317,12 @@ class AddMessageTemplate(GenericTransaction):
                                })
 
     def setResponse(self, response: Response):
-        self.response = GenericResponse(response)
+        self.response = AddTemplateResponse(response)
 
 
 class DeleteMessageTemplateById(GenericTransaction):
     """
-    Delete message specified by Id
+    Delete message template specified by Id
     """
 
     def __init__(self, templateID: int):
