@@ -40,3 +40,14 @@ class GetLog(GenericTransaction):
 
     def setResponse(self, response: Response) -> GenericResponse:
         self.response = GenericResponse(response)
+
+class SetEQ(GenericTransaction):
+    '''
+    Overwrites EQ files to be able to change the EQ without entering the bootloader.
+    Filename must match names on the phone, data is just a string with content of the file.
+    '''
+    def __init__(self, file_name: str, file_data: str):
+        self.request = Request(Endpoint.DEVELOPERMODE, Method.PUT,  {"EQ": "test", "fileName": file_name, "fileData":file_data})
+
+    def setResponse(self, response: Response) -> GenericResponse:
+        self.response = GenericResponse(response)
