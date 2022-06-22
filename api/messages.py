@@ -228,6 +228,7 @@ class TemplatesWithOffsetAndLimitResponse(GenericResponse):
 class MessageTemplateResponse(GenericResponse):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.order = self.response.body["order"]
         self.lastUsedAt = self.response.body["lastUsedAt"]
         self.templateBody = self.response.body["templateBody"]
         self.templateID = self.response.body["templateID"]
@@ -298,6 +299,23 @@ class ChangeMessageTemplate(GenericTransaction):
                                    "category": "template",
                                    "templateID": templateID,
                                    "templateBody": templateBody
+                               })
+
+    def setResponse(self, response: Response):
+        self.response = GenericResponse(response)
+
+
+class ChangeMessageTemplateOrder(GenericTransaction):
+    """
+    Change message template order
+    """
+
+    def __init__(self, templateID: int, order: int):
+        self.request = Request(Endpoint.MESSAGES, Method.PUT,
+                               {
+                                   "category": "template",
+                                   "templateID": templateID,
+                                   "order": order
                                })
 
     def setResponse(self, response: Response):
