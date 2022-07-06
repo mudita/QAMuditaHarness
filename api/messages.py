@@ -195,6 +195,43 @@ class AddMessage(GenericTransaction):
         self.response = AddMessageResponse(response)
 
 
+class AddDraftMessage(GenericTransaction):
+    """
+    Send a draft message to specified phone number
+    """
+
+    def __init__(self, number: str, messageBody: str):
+        self.request = Request(Endpoint.MESSAGES, Method.POST,
+                               {
+                                   "category": "message",
+                                   "number": number,
+                                   "messageBody": messageBody,
+                                   "messageType": 1
+                               })
+
+    def setResponse(self, response: Response):
+        self.response = AddMessageResponse(response)
+
+
+class UpdateDraftMessage(GenericTransaction):
+    """
+    Update a draft message
+    """
+
+    def __init__(self, messageBody: str, messageID: str, threadID: str):
+        self.request = Request(Endpoint.MESSAGES, Method.PUT,
+                               {
+                                   "category": "message",
+                                   "messageBody": messageBody,
+                                   "messageID": messageID,
+                                   "messageType": 1,
+                                   "threadID": threadID
+                               })
+
+    def setResponse(self, response: Response):
+        self.response = GenericResponse(response)
+
+
 class DeleteMessageById(GenericTransaction):
     """
     Delete message specified by Id
