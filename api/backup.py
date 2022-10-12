@@ -1,17 +1,15 @@
-from ..harness import Harness
 from ..request import Request, Response
 from ..interface.defs import Endpoint, Method
-from .. import log
 from .generic import GenericResponse, GenericTransaction
 
 
-class BackupInitResponse(GenericResponse):
+class SyncInitResponse(GenericResponse):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.taskId = self.response.body["id"]
         self.state = self.response.body["state"]
 
-class BackupStateResponse(GenericResponse):
+class SyncStateResponse(GenericResponse):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.taskId = self.response.body["id"]
@@ -24,17 +22,34 @@ class BackupInit(GenericTransaction):
     Initialize backup
     '''
     def __init__(self):
-        self.request = Request(Endpoint.BACKUP, Method.POST, {})
+        self.request = Request(Endpoint.BACKUP, Method.POST, {
+            "category": "backup"
+        })
 
     def setResponse(self, response: Response):
-        self.response = BackupInitResponse(response)
+        self.response = GenericResponse(response)
 
-class BackupGetState(GenericTransaction):
+class SyncInit(GenericTransaction):
     '''
-    Retrieve backup progress state
+    Initialize backup
+    '''
+    def __init__(self):
+        self.request = Request(Endpoint.BACKUP, Method.POST, {
+            "category": "sync"
+        })
+
+    def setResponse(self, response: Response):
+        self.response = SyncInitResponse(response)
+
+class SyncGetState(GenericTransaction):
+    '''
+    Retrieve sync progress state
     '''
     def __init__(self, id: str):
-        self.request = Request(Endpoint.BACKUP, Method.GET, {"id": id})
+        self.request = Request(Endpoint.BACKUP, Method.GET, {
+            "category": "sync",
+            "id": id
+        })
 
     def setResponse(self, response: Response):
-        self.response = BackupStateResponse(response)
+        self.response = SyncStateResponse(response)
