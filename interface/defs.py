@@ -37,6 +37,13 @@ class Endpoint(Enum):
     OUTBOX = 14
 
 
+class FileType(Enum):
+    DIRECTORY = 0
+    REGULAR_FILE = 1
+    SYMLINK = 2
+    OTHER = 3
+
+
 method = {
     "get": 1,
     "post": 2,
@@ -102,6 +109,7 @@ key_codes = {
 }
 
 default_pin = [3, 3, 3, 3]
+
 
 class SMSType(Enum):
     DRAFT = 0x01
