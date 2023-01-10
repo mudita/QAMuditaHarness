@@ -72,6 +72,7 @@ class FsRenameFile(GenericTransaction):
 class FsListFiles(GenericTransaction):
     """
     Returns list of the files available in a directory
+    File types are described in defs.py file
     """
     def __init__(self, directory: str) -> None:
         self.directory = directory
