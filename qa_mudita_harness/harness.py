@@ -11,12 +11,13 @@ from .utils import application_keypath, clear_last_char, send_char, send_keystok
 
 
 class Harness:
-    '''
+    """
     harness class
     WARN: please see that variables below are not class local
-    '''
+    """
+
     is_echo_mode = False
-    port_name = ''
+    port_name = ""
 
     def __init__(self, port):
         self.port_name = port
@@ -25,10 +26,10 @@ class Harness:
 
     @classmethod
     def from_detect(cls):
-        '''
+        """
         Try to instantiate from first detected device.
         Do not use this method if you need >1 unique devices.
-        '''
+        """
         found = serial.CDCSerial.find_Devices()
         if found:
             port = found[0]
@@ -108,14 +109,16 @@ class Harness:
             try:
                 send_char(letter, self.connection)
             except KeyError as e:
-                available = ' '.join((f"'{_}'" for _ in utils.keymap.keys()))
-                raise LookupError(f"Character {e} not present in the keymap\nAvailable characters: {available}")
+                available = " ".join((f"'{_}'" for _ in utils.keymap.keys()))
+                raise LookupError(
+                    f"Character {e} not present in the keymap\nAvailable characters: {available}"
+                )
 
     def send_number(self, number: str):
         utils.send_number(number, self.connection)
 
     def request(self, endpoint: Endpoint, method: Method, data: dict) -> Transaction:
-        '''
+        """
         sends data to device and gets response
         the same as endpoint_request except:
             - works on types
@@ -127,8 +130,10 @@ class Harness:
             ret = harness.request(Endpoint.FILESYSTEM, Method.PUT, body)
             assert ret.response.body["txID"] != 0
         ```
-        '''
-        t = Transaction(Request(endpoint.value, method.value, data, random.randint(1, 32000)))
+        """
+        t = Transaction(
+            Request(endpoint.value, method.value, data, random.randint(1, 32000))
+        )
         t.accept(self.connection.write(t.request.to_dict()))
         r, w = self.connection.get_timing()
         r = r.elapsed()
@@ -137,12 +142,14 @@ class Harness:
         return t
 
     def endpoint_request(self, ep_name: str, met: str, body: dict) -> dict:
-        ret = self.connection.write({
-            "endpoint": endpoint[ep_name],
-            "method": method[met],
-            "uuid": random.randint(1, 32000),
-            "body": body
-        })
+        ret = self.connection.write(
+            {
+                "endpoint": endpoint[ep_name],
+                "method": method[met],
+                "uuid": random.randint(1, 32000),
+                "body": body,
+            }
+        )
         return ret
 
     def turn_phone_off(self):
@@ -154,15 +161,17 @@ class Harness:
             if not end_loop_counter > 0:
                 raise LookupError("Filed to switch to {}".format(app_desktop))
             log.info("Not on the Application Desktop, fnRight.")
-            self.connection.send_key_code(key_codes["fnRight"], serial.Keytype.long_press)
-            end_loop_counter -=  1
+            self.connection.send_key_code(
+                key_codes["fnRight"], serial.Keytype.long_press
+            )
+            end_loop_counter -= 1
 
         self.connection.send_key_code(key_codes["fnRight"], serial.Keytype.long_press)
         self.connection.send_key_code(key_codes["right"])
         self.connection.send_key_code(key_codes["enter"])
 
     def set_tethering_state(self, enabled: bool):
-        state = 'on' if enabled else 'off'
+        state = "on" if enabled else "off"
         body = {"tethering": state}
         log.info(f"Set tethering state to: {state}")
         return self.endpoint_request("developerMode", "put", body)

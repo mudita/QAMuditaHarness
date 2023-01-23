@@ -2,7 +2,7 @@ from ..interface.defs import Endpoint, Method
 from ..request import Request, Response
 from .generic import GenericResponse, GenericTransaction
 
-'''
+"""
 NewContactEntry = {
     "address": "",
     "altName": "",
@@ -17,7 +17,7 @@ NewContactEntry = {
     "priName":   "",
     "note":      ""
 }
-'''
+"""
 
 
 class ContactsCount(GenericResponse):
@@ -70,7 +70,9 @@ class GetContactsWithOffsetAndLimit(GenericTransaction):
     """
 
     def __init__(self, offset: int, limit: int):
-        self.request = Request(Endpoint.CONTACTS, Method.GET, {"offset": offset, "limit": limit})
+        self.request = Request(
+            Endpoint.CONTACTS, Method.GET, {"offset": offset, "limit": limit}
+        )
 
     def setResponse(self, response: Response):
         self.response = Contacts(response)

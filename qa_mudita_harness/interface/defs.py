@@ -15,7 +15,7 @@ endpoint = {
     "events": 10,
     "developerMode": 11,
     "bluetooth": 12,
-    "usbSecurity": 13
+    "usbSecurity": 13,
 }
 
 
@@ -44,12 +44,7 @@ class FileType(Enum):
     OTHER = 3
 
 
-method = {
-    "get": 1,
-    "post": 2,
-    "put": 3,
-    "del": 4
-}
+method = {"get": 1, "post": 2, "put": 3, "del": 4}
 
 
 class Method(Enum):
@@ -91,11 +86,11 @@ class Status(Enum):
 
 
 key_codes = {
-    "left": ord('a'),
-    "right": ord('d'),
-    "up": ord('w'),
-    "down": ord('s'),
-    "enter": ord('\n'),
+    "left": ord("a"),
+    "right": ord("d"),
+    "up": ord("w"),
+    "down": ord("s"),
+    "enter": ord("\n"),
     "fnLeft": 11,
     "fnRight": 12,
     "volUp": 13,
@@ -104,8 +99,8 @@ key_codes = {
     "sliderUp": 16,
     "sliderMid": 18,
     "sliderDown": 17,
-    "#": ord('#'),
-    "*": ord('*'),
+    "#": ord("#"),
+    "*": ord("*"),
 }
 
 default_pin = [3, 3, 3, 3]
@@ -122,9 +117,10 @@ class SMSType(Enum):
 
 
 class PureLogLevel(Enum):
-    '''
+    """
     PurePhone log level
-    '''
+    """
+
     LOGTRACE = 0
     LOGDEBUG = 1
     LOGINFO = 2

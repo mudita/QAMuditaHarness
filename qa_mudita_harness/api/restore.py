@@ -4,9 +4,10 @@ from .generic import GenericResponse, GenericTransaction
 
 
 class RestoreInit(GenericTransaction):
-    '''
+    """
     Initialize restore
-    '''
+    """
+
     def __init__(self):
         self.request = Request(Endpoint.RESTORE, Method.POST, {})
 

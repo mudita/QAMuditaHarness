@@ -40,7 +40,9 @@ class GetCallLogsWithOffsetAndLimit(GenericTransaction):
     """
 
     def __init__(self, offset: int, limit: int):
-        self.request = Request(Endpoint.CALLLOG, Method.GET, {"offset": offset, "limit": limit})
+        self.request = Request(
+            Endpoint.CALLLOG, Method.GET, {"offset": offset, "limit": limit}
+        )
 
     def setResponse(self, response: Response):
         self.response = CallLogsResponse(response)

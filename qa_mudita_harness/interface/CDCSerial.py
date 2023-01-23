@@ -25,7 +25,7 @@ class Keytype(Enum):
 
 
 @dataclass
-class Stats():
+class Stats:
     start: int
     end: int
 
@@ -39,6 +39,7 @@ def timed(foo):
         ret = foo(*args, **kwargs)
         end = time.time()
         return [ret, Stats(start, end)]
+
     return wrap
 
 
@@ -64,10 +65,10 @@ class CDCSerial:
                     raise TestError(Error.PORT_NOT_FOUND)
 
     def watch_port(self):
-        '''
+        """
         inotify in python uses epoll to check notifications
         set insignificant timeout of 0.01ms instead of 1s default
-        '''
+        """
         self.watch = adapters.Inotify(block_duration_s=0.0)
         self.watch.add_watch(self.port_name, IN_ATTRIB)
 
@@ -98,7 +99,7 @@ class CDCSerial:
             "endpoint": endpoint["developerMode"],
             "method": method["put"],
             "uuid": randrange(1, 100),
-            "body": body
+            "body": body,
         }
         return msg
 
@@ -158,7 +159,7 @@ class CDCSerial:
         self.writeRaw(echoOnCmd)
         result = self.readRaw(len(echoOnCmd))
         log.info(f"received length: {len(result)}, result:{result}")
-        ret = (result == echoOnCmd)
+        ret = result == echoOnCmd
         return ret
 
     def disable_echo_mode(self):
@@ -166,41 +167,38 @@ class CDCSerial:
         self.writeRaw(echoOffCmd)
         result = self.readRaw(len(echoOffCmd))
         log.info(f"received length: {len(result)}, result:{result}")
-        ret = (result == echoOffCmd)
+        ret = result == echoOffCmd
         return ret
 
     def send_at(self, at_command, timeout, wait=10):
-        body = {
-            "AT": at_command + "\r",
-            "timeout": timeout
-        }
+        body = {"AT": at_command + "\r", "timeout": timeout}
 
         ret = self.write(self.__wrap_message(body), timeout / 1000 + wait)
         log.info(f"at response {ret}")
         return ret["body"]["ATResponse"]
 
     def get_application_name(self):
-        body = {
-            "focus": True
-        }
+        body = {"focus": True}
 
         ret = self.write(self.__wrap_message(body))
         return ret["body"]["focus"]
 
     def is_phone_locked(self):
-        body = {
-            "phoneLocked": True
-        }
+        body = {"phoneLocked": True}
 
         ret = self.write(self.__wrap_message(body))
         return ret["body"]["phoneLocked"]
 
     @staticmethod
     def find_Devices() -> str:
-        '''
+        """
         Return a list of unique paths to all the Mudita devices found connected to the system
-        '''
+        """
         import serial.tools.list_ports as list_ports
-        return [_.device for _ in list_ports.comports() if _.manufacturer == 'Mudita' and
-                    (_.product == 'Mudita Pure' or _.product == 'Mudita Harmony')]
 
+        return [
+            _.device
+            for _ in list_ports.comports()
+            if _.manufacturer == "Mudita"
+            and (_.product == "Mudita Pure" or _.product == "Mudita Harmony")
+        ]

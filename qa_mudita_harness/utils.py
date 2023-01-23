@@ -8,51 +8,16 @@ from .interface.defs import key_codes
 
 # assuming that the harness is actually in the menu
 application_keypath = {
-    "calllog": [
-        "left",
-        "enter"
-    ],
-    "contacts": [
-        "enter"
-    ],
-    "messages": [
-        "right",
-        "enter"
-    ],
-    "music": [
-        "down",
-        "left",
-        "enter"
-    ],
-    "meditation": [
-        "down",
-        "enter"
-    ],
-    "settings": [
-        "down",
-        "right",
-        "enter"
-    ],
-    "tools": [
-        "up",
-        "left",
-        "enter"
-    ],
-    "alarm": [
-        "up",
-        "enter"
-    ],
-    "calendar": [
-        "up",
-        "right",
-        "enter"
-    ],
-    "ICE call": [
-        "fnLeft",
-        "fnLeft",
-        "enter",
-        "fnLeft"
-    ]
+    "calllog": ["left", "enter"],
+    "contacts": ["enter"],
+    "messages": ["right", "enter"],
+    "music": ["down", "left", "enter"],
+    "meditation": ["down", "enter"],
+    "settings": ["down", "right", "enter"],
+    "tools": ["up", "left", "enter"],
+    "alarm": ["up", "enter"],
+    "calendar": ["up", "right", "enter"],
+    "ICE call": ["fnLeft", "fnLeft", "enter", "fnLeft"],
 }
 
 keymap = {
@@ -101,104 +66,105 @@ keymap = {
 }
 
 special_chars_keymap = {
-    U'.': "",
-    U',': "d",
-    U'\'': "dd",
-    U'?': "ddd",
-    U'!': "dddd",
-    U'"': "ddddd",
-    U'-': "dddddd",
-    U'(': "s",
-    U')': "sd",
-    U'@': "sdd",
-    U'/': "sddd",
-    U':': "sdddd",
-    U'_': "sddddd",
-    U';': "sdddddd",
-    U'␤': "ss",
-    U'+': "ssd",
-    U'&': "ssdd",
-    U'%': "ssddd",
-    U'*': "ssdddd",
-    U'<': "ssddddd",
-    U'>': "ssdddddd",
-    U'=': "sss",
-    U'£': "sssd",
-    U'€': "sssdd",
-    U'$': "sssddd",
-    U'[': "sssdddd",
-    U']': "sssddddd",
-    U'{': "sssdddddd",
-    U'}': "ssss",
-    U'\'': "ssssd",
-    U'^': "ssssdd",
-    U'~': "ssssddd",
-    U'`': "ssssdddd",
-    U'į': "ssssddddd",
-    U'§': "ssssdddddd",
-    U'…': "sssss",
-    U'#': "sssssd",
-    U'|': "sssssdd",
-    U'÷': "sssssddd",
-    U'·': "sssssdddd",
-    U'°': "sssssddddd",
-    U'¿': "sssssdddddd",
-    U'¡': "ssssss",
-    U'ą': "ssssssd",
-    U'à': "ssssssdd",
-    U'á': "ssssssddd",
-    U'ä': "ssssssdddd",
-    U'â': "ssssssddddd",
-    U'ć': "ssssssdddddd",
-    U'ç': "sssssss",
-    U'ę': "sssssssd",
-    U'é': "sssssssdd",
-    U'è': "sssssssddd",
-    U'ê': "sssssssdddd",
-    U'ë': "sssssssddddd",
-    U'î': "sssssssdddddd",
-    U'ï': "ssssssss",
-    U'í': "ssssssssd",
-    U'ł': "ssssssssdd",
-    U'ń': "ssssssssddd",
-    U'ñ': "ssssssssdddd",
-    U'ó': "ssssssssddddd",
-    U'ô': "ssssssssdddddd",
-    U'ö': "sssssssss",
-    U'ś': "sssssssssd",
-    U'û': "sssssssssdd",
-    U'ú': "sssssssssddd",
-    U'ù': "sssssssssdddd",
-    U'ü': "sssssssssddddd",
-    U'ÿ': "sssssssssdddddd",
-    U'ż': "ssssssssss",
-    U'ź': "ssssssssssd",
-    U'ß': "ssssssssssdd"
+    ".": "",
+    ",": "d",
+    "'": "dd",
+    "?": "ddd",
+    "!": "dddd",
+    '"': "ddddd",
+    "-": "dddddd",
+    "(": "s",
+    ")": "sd",
+    "@": "sdd",
+    "/": "sddd",
+    ":": "sdddd",
+    "_": "sddddd",
+    ";": "sdddddd",
+    "␤": "ss",
+    "+": "ssd",
+    "&": "ssdd",
+    "%": "ssddd",
+    "*": "ssdddd",
+    "<": "ssddddd",
+    ">": "ssdddddd",
+    "=": "sss",
+    "£": "sssd",
+    "€": "sssdd",
+    "$": "sssddd",
+    "[": "sssdddd",
+    "]": "sssddddd",
+    "{": "sssdddddd",
+    "}": "ssss",
+    "'": "ssssd",
+    "^": "ssssdd",
+    "~": "ssssddd",
+    "`": "ssssdddd",
+    "į": "ssssddddd",
+    "§": "ssssdddddd",
+    "…": "sssss",
+    "#": "sssssd",
+    "|": "sssssdd",
+    "÷": "sssssddd",
+    "·": "sssssdddd",
+    "°": "sssssddddd",
+    "¿": "sssssdddddd",
+    "¡": "ssssss",
+    "ą": "ssssssd",
+    "à": "ssssssdd",
+    "á": "ssssssddd",
+    "ä": "ssssssdddd",
+    "â": "ssssssddddd",
+    "ć": "ssssssdddddd",
+    "ç": "sssssss",
+    "ę": "sssssssd",
+    "é": "sssssssdd",
+    "è": "sssssssddd",
+    "ê": "sssssssdddd",
+    "ë": "sssssssddddd",
+    "î": "sssssssdddddd",
+    "ï": "ssssssss",
+    "í": "ssssssssd",
+    "ł": "ssssssssdd",
+    "ń": "ssssssssddd",
+    "ñ": "ssssssssdddd",
+    "ó": "ssssssssddddd",
+    "ô": "ssssssssdddddd",
+    "ö": "sssssssss",
+    "ś": "sssssssssd",
+    "û": "sssssssssdd",
+    "ú": "sssssssssddd",
+    "ù": "sssssssssdddd",
+    "ü": "sssssssssddddd",
+    "ÿ": "sssssssssdddddd",
+    "ż": "ssssssssss",
+    "ź": "ssssssssssd",
+    "ß": "ssssssssssdd",
 }
 
 emojis_keymap = {
-    U'😁': "",
-    U'😂': "d",
-    U'😃': "dd",
-    U'😄': "ddd",
-    U'😅': "dddd",
-    U'😆': "ddddd",
-    U'😉': "dddddd",
-    U'😊': "s",
-    U'😋': "sd",
-    U'😌': "sdd",
-    U'😍': "sddd",
-    U'😏': "sdddd",
-    U'😒': "sddddd",
-    U'😓': "sdddddd",
-    U'😔': "ss",
-    U'😖': "ssd",
-    U'😘': "ssdd",
-    U'😚': "ssddd",
-    U'😜': "ssdddd",
-    U'😝': "ssddddd",
-    U'😼': "ssdddddd"
+    "😁": "",
+    "😂": "d",
+    "😃": "dd",
+    "😄": "ddd",
+    "😅": "dddd",
+    "😆": "ddddd",
+    "😉": "dddddd",
+    "😊": "s",
+    "😋": "sd",
+    "😌": "sdd",
+    "😍": "sddd",
+    "😏": "sdddd",
+    "😒": "sddddd",
+    "😓": "sdddddd",
+    "😔": "ss",
+    "😖": "ssd",
+    "😘": "ssdd",
+    "😚": "ssddd",
+    "😜": "ssdddd",
+    "😝": "ssddddd",
+    "😼": "ssdddddd",
 }
+
 
 def send_keystoke(keypath, connection):
     for key in keypath:
@@ -206,12 +172,12 @@ def send_keystoke(keypath, connection):
         time.sleep(0.3)
 
 
-last_char = '\0'
+last_char = "\0"
 
 
 def clear_last_char():
     global last_char
-    last_char = '\0'
+    last_char = "\0"
 
 
 def send_char(char: str, connection):
@@ -266,12 +232,14 @@ def send_number(number: str, connection):
             connection.send_key_code(int(digit))
             time.sleep(0.3)
 
+
 def validate_pin(pin):
     if len(pin) != 4:
         raise RuntimeError("Pin length not equal to 4")
     for digit in pin:
         if not isinstance(digit, int):
             raise TypeError("Pin could be only set of digits")
+
 
 ### timeout from https://stackoverflow.com/a/601168/5752094
 
@@ -280,19 +248,20 @@ from contextlib import contextmanager
 
 
 class Timeout(Exception):
-    '''
+    """
     usage:
         try:
             with Timeout.limit(10):
                 long_function_call()
         except Timeout as e:
             print("Timed out!")
-    '''
+    """
 
     @classmethod
     @contextmanager
     def limit(cls, seconds: int):
         assert seconds >= 1, "Timeout must be at least 1 second !"
+
         def signal_handler(signum, frame):
             raise Timeout("Timed out!")
 

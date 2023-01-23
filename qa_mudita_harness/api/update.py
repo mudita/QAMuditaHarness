@@ -10,11 +10,14 @@ class Reboot(Enum):
 
 
 class PhoneReboot(GenericTransaction):
-    '''
+    """
     Requests for Phone reboot, right now with "update" reason
-    '''
+    """
+
     def __init__(self, type: Reboot):
-        self.request = Request(Endpoint.UPDATE, Method.POST, {"update": True, "reboot": type.value})
+        self.request = Request(
+            Endpoint.UPDATE, Method.POST, {"update": True, "reboot": type.value}
+        )
 
     def setResponse(self, response: Response):
         self.response = GenericResponse(response)
@@ -22,13 +25,16 @@ class PhoneReboot(GenericTransaction):
     def onRun(self, harness):
         harness.reboot_requested = True
 
+
 class RebootToUsbMscMode(GenericTransaction):
     """
     Reboot device to USB MSC mode
     """
 
     def __init__(self):
-        self.request = Request(Endpoint.UPDATE, Method.PUT, {"rebootMode": "usbMscMode"})
+        self.request = Request(
+            Endpoint.UPDATE, Method.PUT, {"rebootMode": "usbMscMode"}
+        )
 
     def setResponse(self, response: Response):
         self.response = GenericResponse(response)

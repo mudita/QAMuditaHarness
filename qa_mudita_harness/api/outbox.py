@@ -20,7 +20,13 @@ class NotificationChange(Enum):
 
 
 class NotificationEntry:
-    def __init__(self, uid: int, type: NotificationType, change: NotificationChange, record_id: int):
+    def __init__(
+        self,
+        uid: int,
+        type: NotificationType,
+        change: NotificationChange,
+        record_id: int,
+    ):
         self.uid = uid
         self.type = type
         self.change = change
@@ -32,7 +38,11 @@ class NotificationsResponse(GenericResponse):
         super().__init__(*args, **kwargs)
         self.entries = []
         for entry in self.response.body["entries"]:
-            self.entries.append(NotificationEntry(entry["uid"], entry["type"], entry["change"], entry["record_id"]))
+            self.entries.append(
+                NotificationEntry(
+                    entry["uid"], entry["type"], entry["change"], entry["record_id"]
+                )
+            )
 
 
 class GetNotifications(GenericTransaction):

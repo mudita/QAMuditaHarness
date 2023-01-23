@@ -24,12 +24,11 @@ class GetThreadsWithOffsetAndLimit(GenericTransaction):
     """
 
     def __init__(self, offset: int, limit: int):
-        self.request = Request(Endpoint.MESSAGES, Method.GET,
-                               {
-                                   "category": "thread",
-                                   "offset": offset,
-                                   "limit": limit
-                               })
+        self.request = Request(
+            Endpoint.MESSAGES,
+            Method.GET,
+            {"category": "thread", "offset": offset, "limit": limit},
+        )
 
     def setResponse(self, response: Response):
         self.response = ThreadsResponse(response)
@@ -41,11 +40,9 @@ class GetThreadById(GenericTransaction):
     """
 
     def __init__(self, threadID: int):
-        self.request = Request(Endpoint.MESSAGES, Method.GET,
-                               {
-                                   "category": "thread",
-                                   "threadID": threadID
-                               })
+        self.request = Request(
+            Endpoint.MESSAGES, Method.GET, {"category": "thread", "threadID": threadID}
+        )
 
     def setResponse(self, response: Response):
         self.response = ThreadByIdResponse(response)
@@ -57,12 +54,11 @@ class MarkThreadAsUnread(GenericTransaction):
     """
 
     def __init__(self, threadID: int, isUnread: bool):
-        self.request = Request(Endpoint.MESSAGES, Method.GET,
-                               {
-                                   "category": "thread",
-                                   "threadID": threadID,
-                                   "isUnread": isUnread
-                               })
+        self.request = Request(
+            Endpoint.MESSAGES,
+            Method.GET,
+            {"category": "thread", "threadID": threadID, "isUnread": isUnread},
+        )
 
     def setResponse(self, response: Response):
         self.response = GenericResponse(response)
@@ -74,11 +70,9 @@ class DeleteThreadById(GenericTransaction):
     """
 
     def __init__(self, threadID: int):
-        self.request = Request(Endpoint.MESSAGES, Method.DEL,
-                               {
-                                   "category": "thread",
-                                   "threadID": threadID
-                               })
+        self.request = Request(
+            Endpoint.MESSAGES, Method.DEL, {"category": "thread", "threadID": threadID}
+        )
 
     def setResponse(self, response: Response):
         self.response = GenericResponse(response)
@@ -117,11 +111,9 @@ class GetMessagesCount(GenericTransaction):
     """
 
     def __init__(self):
-        self.request = Request(Endpoint.MESSAGES, Method.GET,
-                               {
-                                   "category": "message",
-                                   "count": True
-                               })
+        self.request = Request(
+            Endpoint.MESSAGES, Method.GET, {"category": "message", "count": True}
+        )
 
     def setResponse(self, response: Response):
         self.response = MessagesCountResponse(response)
@@ -133,12 +125,11 @@ class GetMessagesWithOffsetAndLimit(GenericTransaction):
     """
 
     def __init__(self, offset: int, limit: int):
-        self.request = Request(Endpoint.MESSAGES, Method.GET,
-                               {
-                                   "category": "message",
-                                   "offset": offset,
-                                   "limit": limit
-                               })
+        self.request = Request(
+            Endpoint.MESSAGES,
+            Method.GET,
+            {"category": "message", "offset": offset, "limit": limit},
+        )
 
     def setResponse(self, response: Response):
         self.response = MessagesResponse(response)
@@ -150,11 +141,11 @@ class GetMessageById(GenericTransaction):
     """
 
     def __init__(self, messageID: int):
-        self.request = Request(Endpoint.MESSAGES, Method.GET,
-                               {
-                                   "category": "message",
-                                   "messageID": messageID
-                               })
+        self.request = Request(
+            Endpoint.MESSAGES,
+            Method.GET,
+            {"category": "message", "messageID": messageID},
+        )
 
     def setResponse(self, response: Response):
         self.response = MessageByIdResponse(response)
@@ -166,13 +157,16 @@ class GetMessagesByThreadIdWithOffsetAndLimit(GenericTransaction):
     """
 
     def __init__(self, threadID: int, offset: int, limit: int):
-        self.request = Request(Endpoint.MESSAGES, Method.GET,
-                               {
-                                   "category": "message",
-                                   "threadID": threadID,
-                                   "offset": offset,
-                                   "limit": limit
-                               })
+        self.request = Request(
+            Endpoint.MESSAGES,
+            Method.GET,
+            {
+                "category": "message",
+                "threadID": threadID,
+                "offset": offset,
+                "limit": limit,
+            },
+        )
 
     def setResponse(self, response: Response):
         self.response = MessagesResponse(response)
@@ -184,12 +178,11 @@ class AddMessage(GenericTransaction):
     """
 
     def __init__(self, number: str, messageBody: str):
-        self.request = Request(Endpoint.MESSAGES, Method.POST,
-                               {
-                                   "category": "message",
-                                   "number": number,
-                                   "messageBody": messageBody
-                               })
+        self.request = Request(
+            Endpoint.MESSAGES,
+            Method.POST,
+            {"category": "message", "number": number, "messageBody": messageBody},
+        )
 
     def setResponse(self, response: Response):
         self.response = AddMessageResponse(response)
@@ -201,13 +194,16 @@ class AddDraftMessage(GenericTransaction):
     """
 
     def __init__(self, number: str, messageBody: str):
-        self.request = Request(Endpoint.MESSAGES, Method.POST,
-                               {
-                                   "category": "message",
-                                   "number": number,
-                                   "messageBody": messageBody,
-                                   "messageType": 1
-                               })
+        self.request = Request(
+            Endpoint.MESSAGES,
+            Method.POST,
+            {
+                "category": "message",
+                "number": number,
+                "messageBody": messageBody,
+                "messageType": 1,
+            },
+        )
 
     def setResponse(self, response: Response):
         self.response = AddMessageResponse(response)
@@ -219,14 +215,17 @@ class UpdateDraftMessage(GenericTransaction):
     """
 
     def __init__(self, messageBody: str, messageID: str, threadID: str):
-        self.request = Request(Endpoint.MESSAGES, Method.PUT,
-                               {
-                                   "category": "message",
-                                   "messageBody": messageBody,
-                                   "messageID": messageID,
-                                   "messageType": 1,
-                                   "threadID": threadID
-                               })
+        self.request = Request(
+            Endpoint.MESSAGES,
+            Method.PUT,
+            {
+                "category": "message",
+                "messageBody": messageBody,
+                "messageID": messageID,
+                "messageType": 1,
+                "threadID": threadID,
+            },
+        )
 
     def setResponse(self, response: Response):
         self.response = GenericResponse(response)
@@ -238,11 +237,11 @@ class DeleteMessageById(GenericTransaction):
     """
 
     def __init__(self, messageID: int):
-        self.request = Request(Endpoint.MESSAGES, Method.DEL,
-                               {
-                                   "category": "message",
-                                   "messageID": messageID
-                               })
+        self.request = Request(
+            Endpoint.MESSAGES,
+            Method.DEL,
+            {"category": "message", "messageID": messageID},
+        )
 
     def setResponse(self, response: Response):
         self.response = GenericResponse(response)
@@ -270,6 +269,7 @@ class MessageTemplateResponse(GenericResponse):
         self.templateBody = self.response.body["templateBody"]
         self.templateID = self.response.body["templateID"]
 
+
 class AddTemplateResponse(GenericResponse):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -282,11 +282,9 @@ class GetTemplatesCount(GenericTransaction):
     """
 
     def __init__(self):
-        self.request = Request(Endpoint.MESSAGES, Method.GET,
-                               {
-                                   "category": "template",
-                                   "count": True
-                               })
+        self.request = Request(
+            Endpoint.MESSAGES, Method.GET, {"category": "template", "count": True}
+        )
 
     def setResponse(self, response: Response):
         self.response = TemplatesCountResponse(response)
@@ -298,12 +296,11 @@ class GetTemplatesWithOffsetAndLimit(GenericTransaction):
     """
 
     def __init__(self, offset: int, limit: int):
-        self.request = Request(Endpoint.MESSAGES, Method.GET,
-                               {
-                                   "category": "template",
-                                   "offset": offset,
-                                   "limit": limit
-                               })
+        self.request = Request(
+            Endpoint.MESSAGES,
+            Method.GET,
+            {"category": "template", "offset": offset, "limit": limit},
+        )
 
     def setResponse(self, response: Response):
         self.response = TemplatesWithOffsetAndLimitResponse(response)
@@ -315,11 +312,11 @@ class GetMessageTemplateById(GenericTransaction):
     """
 
     def __init__(self, templateID: int):
-        self.request = Request(Endpoint.MESSAGES, Method.GET,
-                               {
-                                   "category": "template",
-                                   "templateID": templateID
-                               })
+        self.request = Request(
+            Endpoint.MESSAGES,
+            Method.GET,
+            {"category": "template", "templateID": templateID},
+        )
 
     def setResponse(self, response: Response):
         self.response = MessageTemplateResponse(response)
@@ -331,12 +328,15 @@ class ChangeMessageTemplate(GenericTransaction):
     """
 
     def __init__(self, templateID: int, templateBody: str):
-        self.request = Request(Endpoint.MESSAGES, Method.PUT,
-                               {
-                                   "category": "template",
-                                   "templateID": templateID,
-                                   "templateBody": templateBody
-                               })
+        self.request = Request(
+            Endpoint.MESSAGES,
+            Method.PUT,
+            {
+                "category": "template",
+                "templateID": templateID,
+                "templateBody": templateBody,
+            },
+        )
 
     def setResponse(self, response: Response):
         self.response = GenericResponse(response)
@@ -348,12 +348,11 @@ class ChangeMessageTemplateOrder(GenericTransaction):
     """
 
     def __init__(self, templateID: int, order: int):
-        self.request = Request(Endpoint.MESSAGES, Method.PUT,
-                               {
-                                   "category": "template",
-                                   "templateID": templateID,
-                                   "order": order
-                               })
+        self.request = Request(
+            Endpoint.MESSAGES,
+            Method.PUT,
+            {"category": "template", "templateID": templateID, "order": order},
+        )
 
     def setResponse(self, response: Response):
         self.response = GenericResponse(response)
@@ -365,11 +364,11 @@ class AddMessageTemplate(GenericTransaction):
     """
 
     def __init__(self, templateBody: str):
-        self.request = Request(Endpoint.MESSAGES, Method.POST,
-                               {
-                                   "category": "template",
-                                   "templateBody": templateBody
-                               })
+        self.request = Request(
+            Endpoint.MESSAGES,
+            Method.POST,
+            {"category": "template", "templateBody": templateBody},
+        )
 
     def setResponse(self, response: Response):
         self.response = AddTemplateResponse(response)
@@ -381,11 +380,11 @@ class DeleteMessageTemplateById(GenericTransaction):
     """
 
     def __init__(self, templateID: int):
-        self.request = Request(Endpoint.MESSAGES, Method.DEL,
-                               {
-                                   "category": "template",
-                                   "templateID": templateID
-                               })
+        self.request = Request(
+            Endpoint.MESSAGES,
+            Method.DEL,
+            {"category": "template", "templateID": templateID},
+        )
 
     def setResponse(self, response: Response):
         self.response = GenericResponse(response)

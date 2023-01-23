@@ -10,10 +10,12 @@ class FactoryResetResponse(GenericResponse):
         super().__init__(*args, **kwargs)
         self.requestDone = self.response.body["factoryRequest"]
 
+
 class FactoryReset(GenericTransaction):
-    '''
+    """
     Requests to perform a factory reset
-    '''
+    """
+
     def __init__(self):
         self.request = Request(Endpoint.FACTORY, Method.POST, {"factoryRequest": True})
 
