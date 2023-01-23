@@ -4,7 +4,6 @@
 
 import pytest
 
-
 from qa_mudita_harness import qa_mudita_harness
 
 

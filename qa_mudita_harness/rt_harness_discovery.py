@@ -1,9 +1,9 @@
-from .harness import Harness
-from .interface.error import TestError, Error
-from . import log
-from .utils import Timeout
 import time
 
+from . import log
+from .harness import Harness
+from .interface.error import Error, TestError
+from .utils import Timeout
 
 simulator_port = 'simulator'
 

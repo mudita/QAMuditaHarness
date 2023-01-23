@@ -1,13 +1,15 @@
-from ..interface.error import TestError, Error
-from ..harness import Harness
-from ..request import Request, Response
-from ..interface.defs import Endpoint, Method
-from .. import log
 import base64
-from tqdm import tqdm
 import os
 import zlib
 from functools import partial
+
+from tqdm import tqdm
+
+from .. import log
+from ..harness import Harness
+from ..interface.defs import Endpoint, Method
+from ..interface.error import Error, TestError
+from ..request import Request, Response
 from .generic import GenericResponse, GenericTransaction
 
 

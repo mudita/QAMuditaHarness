@@ -1,10 +1,10 @@
-from .harness import Harness
 from . import log
-from .utils import Timeout
-from .rt_harness_discovery import get_harness_automatic, get_harness_by_port_name
-from .api.update import PhoneReboot, Reboot
 from .api.developermode import PhoneModeLock
+from .api.update import PhoneReboot, Reboot
+from .harness import Harness
 from .interface.error import ComError
+from .rt_harness_discovery import get_harness_automatic, get_harness_by_port_name
+from .utils import Timeout
 
 
 class HarnessCache:

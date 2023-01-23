@@ -1,6 +1,8 @@
-from harness.request import Request, Response
-from harness.interface.defs import Endpoint, Method
 from enum import IntEnum
+
+from harness.interface.defs import Endpoint, Method
+from harness.request import Request, Response
+
 from .generic import GenericResponse, GenericTransaction
 
 

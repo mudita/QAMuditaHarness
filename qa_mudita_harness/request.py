@@ -1,6 +1,8 @@
-from .interface.defs import Method, Status, Endpoint
 from dataclasses import dataclass, field
+
 from dataclasses_json import dataclass_json
+
+from .interface.defs import Endpoint, Method, Status
 
 
 class TransmissionError(Exception):

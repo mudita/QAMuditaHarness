@@ -1,17 +1,18 @@
 # Copyright (c) 2017-2020, Mudita Sp. z.o.o. All rights reserved.
 # For licensing, see https://github.com/mudita/MuditaOS/LICENSE.md
-import time
-import serial
 import json
 import logging
+import time
+from dataclasses import dataclass
 from enum import Enum
 from random import randrange
 
-from .defs import endpoint, method
-from .error import TestError, Error, ComError
-from dataclasses import dataclass
+import serial
 from inotify import adapters
 from inotify.constants import IN_ATTRIB
+
+from .defs import endpoint, method
+from .error import ComError, Error, TestError
 
 inotify_logger = logging.getLogger(adapters.__name__)
 inotify_logger.setLevel(logging.ERROR)

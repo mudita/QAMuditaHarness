@@ -6,7 +6,6 @@ import time
 from .interface.CDCSerial import Keytype
 from .interface.defs import key_codes
 
-
 # assuming that the harness is actually in the menu
 application_keypath = {
     "calllog": [
@@ -276,9 +275,8 @@ def validate_pin(pin):
 
 ### timeout from https://stackoverflow.com/a/601168/5752094
 
-from contextlib import contextmanager
-
 import signal
+from contextlib import contextmanager
 
 
 class Timeout(Exception):

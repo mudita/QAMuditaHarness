@@ -2,25 +2,12 @@
 # For licensing, see https://github.com/mudita/MuditaOS/LICENSE.md
 import random
 
-from . import utils
-from . import log
-
-from .utils import send_keystoke
-from .utils import application_keypath
-from .utils import send_char
-from .utils import clear_last_char
-
+from . import log, utils
 from .interface import CDCSerial as serial
-
-from .interface.error import TestError
-from .interface.error import Error
-
-from .interface.defs import key_codes
-from .interface.defs import endpoint
-from .interface.defs import method
-from .interface.defs import default_pin
-from .interface.defs import Method, Endpoint
-from .request import Transaction, Request
+from .interface.defs import Endpoint, Method, default_pin, endpoint, key_codes, method
+from .interface.error import Error, TestError
+from .request import Request, Transaction
+from .utils import application_keypath, clear_last_char, send_char, send_keystoke
 
 
 class Harness:

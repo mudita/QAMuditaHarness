@@ -1,5 +1,6 @@
 from ..harness import Harness
 from ..request import Response
+
 '''
 GenericResponse based classes provide wrapper to get data via parameter i.e.
 FsInitResponse provides us with:

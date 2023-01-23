@@ -1,6 +1,7 @@
-from ..request import Request, Response
-from ..interface.defs import Endpoint, Method, PureLogLevel
 from enum import Enum
+
+from ..interface.defs import Endpoint, Method, PureLogLevel
+from ..request import Request, Response
 from .generic import GenericResponse, GenericTransaction
 
 
