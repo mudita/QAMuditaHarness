@@ -47,8 +47,8 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr htmlcov/
 	rm -fr .pytest_cache
 
-lint/flake8: ## check style with flake8
-	flake8 qa_mudita_harness tests
+lint/pylint: ## check style with flake8
+	tox -e lint qa_mudita_harness tests
 lint/black: ## check style with black
 	black --check qa_mudita_harness tests
 
