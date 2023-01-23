@@ -106,3 +106,9 @@ ENV/
 .vscode/
 .idea/
 .history
+
+# temp files
+delme*
+
+# Logs
+logs*
