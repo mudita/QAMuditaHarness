@@ -1,4 +1,4 @@
-from . import log
+from logger import log
 from .api.developermode import PhoneModeLock
 from .api.update import PhoneReboot, Reboot
 from .harness import Harness

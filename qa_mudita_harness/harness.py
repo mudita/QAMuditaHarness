@@ -2,7 +2,7 @@
 # For licensing, see https://github.com/mudita/MuditaOS/LICENSE.md
 import random
 
-from . import log, utils
+from logger import log, utils
 from .interface import CDCSerial as serial
 from .interface.defs import Endpoint, Method, default_pin, endpoint, key_codes, method
 from .interface.error import Error, TestError

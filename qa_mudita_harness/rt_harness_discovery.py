@@ -1,6 +1,6 @@
 import time
 
-from . import log
+from logger import log
 from .harness import Harness
 from .interface.error import Error, TestError
 from .utils import Timeout
