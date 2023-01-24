@@ -1,8 +1,8 @@
 import time
 
-from logger import log
 from .harness import Harness
 from .interface.error import Error, TestError
+from .logger import log
 from .utils import Timeout
 
 simulator_port = "simulator"

@@ -2,12 +2,20 @@
 # For licensing, see https://github.com/mudita/MuditaOS/LICENSE.md
 import random
 
-from logger import log, utils
 from .interface import CDCSerial as serial
 from .interface.defs import Endpoint, Method, default_pin, endpoint, key_codes, method
 from .interface.error import Error, TestError
+from .logger import log
 from .request import Request, Transaction
-from .utils import application_keypath, clear_last_char, send_char, send_keystoke
+from .utils import (
+    application_keypath,
+    clear_last_char,
+    send_char,
+    send_keystoke,
+    send_number,
+    keymap,
+    validate_pin,
+)
 
 
 class Harness:
@@ -30,13 +38,13 @@ class Harness:
         Try to instantiate from first detected device.
         Do not use this method if you need >1 unique devices.
         """
-        found = serial.CDCSerial.find_Devices()
-        if found:
-            port = found[0]
-            return cls(port)
-        else:
-            raise TestError(Error.PORT_NOT_FOUND)
+        are_devices_found = serial.CDCSerial.find_Devices()
+        if are_devices_found:
+            return cls(are_devices_found[0])
+        raise TestError(Error.PORT_NOT_FOUND)
 
+    # TODO: get_connetion and set_connection should be implemented as
+    # getter/setter methods.
     def get_connection(self):
         return self.connection
 
@@ -44,6 +52,7 @@ class Harness:
         Harness.connection = connection
         self.connection = connection
 
+    # TODO: This could be property
     def get_application_name(self):
         return self.connection.get_application_name()
 
@@ -57,7 +66,7 @@ class Harness:
         return self.phone_mode_lock
 
     def enter_passcode(self, pin=default_pin):
-        utils.validate_pin(pin)
+        validate_pin(pin)
         if self.connection.is_phone_locked():
             self.connection.send_key_code(key_codes["enter"])
             self.connection.send_key_code(key_codes["#"])
@@ -109,13 +118,13 @@ class Harness:
             try:
                 send_char(letter, self.connection)
             except KeyError as e:
-                available = " ".join((f"'{_}'" for _ in utils.keymap.keys()))
+                available = " ".join((f"'{_}'" for _ in keymap.keys()))
                 raise LookupError(
                     f"Character {e} not present in the keymap\nAvailable characters: {available}"
                 )
 
     def send_number(self, number: str):
-        utils.send_number(number, self.connection)
+        send_number(number, self.connection)
 
     def request(self, endpoint: Endpoint, method: Method, data: dict) -> Transaction:
         """

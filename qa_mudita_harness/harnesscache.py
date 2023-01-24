@@ -1,8 +1,8 @@
-from logger import log
 from .api.developermode import PhoneModeLock
 from .api.update import PhoneReboot, Reboot
 from .harness import Harness
 from .interface.error import ComError
+from .logger import log
 from .rt_harness_discovery import get_harness_automatic, get_harness_by_port_name
 from .utils import Timeout
 
