@@ -1,0 +1,273 @@
+# Copyright (c) 2017-2021, Mudita Sp. z.o.o. All rights reserved.
+# For licensing, see https://github.com/mudita/MuditaOS/LICENSE.md
+
+import time
+
+from .interface.CDCSerial import Keytype
+from .interface.defs import key_codes
+
+# assuming that the harness is actually in the menu
+application_keypath = {
+    "calllog": ["left", "enter"],
+    "contacts": ["enter"],
+    "messages": ["right", "enter"],
+    "music": ["down", "left", "enter"],
+    "meditation": ["down", "enter"],
+    "settings": ["down", "right", "enter"],
+    "tools": ["up", "left", "enter"],
+    "alarm": ["up", "enter"],
+    "calendar": ["up", "right", "enter"],
+    "ICE call": ["fnLeft", "fnLeft", "enter", "fnLeft"],
+}
+
+keymap = {
+    "A": "2",
+    "B": "22",
+    "C": "222",
+    "D": "3",
+    "E": "33",
+    "F": "333",
+    "G": "4",
+    "H": "44",
+    "I": "444",
+    "J": "5",
+    "K": "55",
+    "L": "555",
+    "M": "6",
+    "N": "66",
+    "O": "666",
+    "P": "7",
+    "Q": "77",
+    "R": "777",
+    "S": "7777",
+    "T": "8",
+    "U": "88",
+    "V": "888",
+    "W": "9",
+    "X": "99",
+    "Y": "999",
+    "Z": "9999",
+    " ": "0",
+    ".": "1",
+    ",": "11",
+    "_": "111",
+    ":": "1111",
+    ";": "11111",
+    ")": "111111",
+    "(": "1111111",
+    "?": "11111111",
+    "!": "111111111",
+    "#": "1111111111",
+    "/": "11111111111",
+    "*": "111111111111",
+    "+": "1111111111111",
+    "del": key_codes["#"],
+    "caps": key_codes["*"],
+}
+
+special_chars_keymap = {
+    ".": "",
+    ",": "d",
+    "'": "dd",
+    "?": "ddd",
+    "!": "dddd",
+    '"': "ddddd",
+    "-": "dddddd",
+    "(": "s",
+    ")": "sd",
+    "@": "sdd",
+    "/": "sddd",
+    ":": "sdddd",
+    "_": "sddddd",
+    ";": "sdddddd",
+    "␤": "ss",
+    "+": "ssd",
+    "&": "ssdd",
+    "%": "ssddd",
+    "*": "ssdddd",
+    "<": "ssddddd",
+    ">": "ssdddddd",
+    "=": "sss",
+    "£": "sssd",
+    "€": "sssdd",
+    "$": "sssddd",
+    "[": "sssdddd",
+    "]": "sssddddd",
+    "{": "sssdddddd",
+    "}": "ssss",
+    "'": "ssssd",
+    "^": "ssssdd",
+    "~": "ssssddd",
+    "`": "ssssdddd",
+    "į": "ssssddddd",
+    "§": "ssssdddddd",
+    "…": "sssss",
+    "#": "sssssd",
+    "|": "sssssdd",
+    "÷": "sssssddd",
+    "·": "sssssdddd",
+    "°": "sssssddddd",
+    "¿": "sssssdddddd",
+    "¡": "ssssss",
+    "ą": "ssssssd",
+    "à": "ssssssdd",
+    "á": "ssssssddd",
+    "ä": "ssssssdddd",
+    "â": "ssssssddddd",
+    "ć": "ssssssdddddd",
+    "ç": "sssssss",
+    "ę": "sssssssd",
+    "é": "sssssssdd",
+    "è": "sssssssddd",
+    "ê": "sssssssdddd",
+    "ë": "sssssssddddd",
+    "î": "sssssssdddddd",
+    "ï": "ssssssss",
+    "í": "ssssssssd",
+    "ł": "ssssssssdd",
+    "ń": "ssssssssddd",
+    "ñ": "ssssssssdddd",
+    "ó": "ssssssssddddd",
+    "ô": "ssssssssdddddd",
+    "ö": "sssssssss",
+    "ś": "sssssssssd",
+    "û": "sssssssssdd",
+    "ú": "sssssssssddd",
+    "ù": "sssssssssdddd",
+    "ü": "sssssssssddddd",
+    "ÿ": "sssssssssdddddd",
+    "ż": "ssssssssss",
+    "ź": "ssssssssssd",
+    "ß": "ssssssssssdd",
+}
+
+emojis_keymap = {
+    "😁": "",
+    "😂": "d",
+    "😃": "dd",
+    "😄": "ddd",
+    "😅": "dddd",
+    "😆": "ddddd",
+    "😉": "dddddd",
+    "😊": "s",
+    "😋": "sd",
+    "😌": "sdd",
+    "😍": "sddd",
+    "😏": "sdddd",
+    "😒": "sddddd",
+    "😓": "sdddddd",
+    "😔": "ss",
+    "😖": "ssd",
+    "😘": "ssdd",
+    "😚": "ssddd",
+    "😜": "ssdddd",
+    "😝": "ssddddd",
+    "😼": "ssdddddd",
+}
+
+
+def send_keystoke(keypath, connection):
+    for key in keypath:
+        connection.send_key_code(key_codes[key])
+        time.sleep(0.3)
+
+
+last_char = "\0"
+
+
+def clear_last_char():
+    global last_char
+    last_char = "\0"
+
+
+def send_char(char: str, connection):
+    global last_char
+    key_type = Keytype.short_press
+    if char.isascii():
+        if char.isdigit():
+            key_type = Keytype.long_press
+            if last_char is char:
+                print("repeated key!")
+                connection.send_key_code(key_codes["right"])
+            connection.send_key_code(int(char), key_type)
+            connection.send_key_code(key_codes["right"])
+            last_char = char
+        elif char.islower():
+            tmp = char.upper()
+            # toggle to lowercase mode
+            connection.send_key_code(key_codes["*"], key_type)
+            if last_char is keymap[tmp][0]:
+                print("repeated key!")
+                connection.send_key_code(key_codes["right"], key_type)
+            for key in keymap[tmp]:
+                connection.send_key_code(int(key), key_type)
+            last_char = keymap[tmp][0]
+            # toggle to uppercase mode
+            connection.send_key_code(key_codes["*"], key_type)
+            connection.send_key_code(key_codes["*"], key_type)
+        else:
+            if last_char is keymap[char][0]:
+                print("repeated key!")
+                connection.send_key_code(key_codes["right"], key_type)
+            for key in keymap[char]:
+                connection.send_key_code(int(key), key_type)
+            last_char = keymap[char][0]
+    else:
+        connection.send_key_code(key_codes["*"], Keytype.long_press)
+        if char in special_chars_keymap:
+            for key in special_chars_keymap[char]:
+                connection.send_key_code(ord(key), key_type)
+        elif char in emojis_keymap:
+            connection.send_key_code(key_codes["fnLeft"], Keytype.short_press)
+            for key in emojis_keymap[char]:
+                connection.send_key_code(ord(key), key_type)
+        else:
+            print("Not supported char {} !!!".format(char))
+        connection.send_key_code(key_codes["enter"], key_type)
+
+
+def send_number(number: str, connection):
+    if number.isnumeric():
+        for digit in number:
+            connection.send_key_code(int(digit))
+            time.sleep(0.3)
+
+
+def validate_pin(pin):
+    if len(pin) != 4:
+        raise RuntimeError("Pin length not equal to 4")
+    for digit in pin:
+        if not isinstance(digit, int):
+            raise TypeError("Pin could be only set of digits")
+
+
+### timeout from https://stackoverflow.com/a/601168/5752094
+
+import signal
+from contextlib import contextmanager
+
+
+class Timeout(Exception):
+    """
+    usage:
+        try:
+            with Timeout.limit(10):
+                long_function_call()
+        except Timeout as e:
+            print("Timed out!")
+    """
+
+    @classmethod
+    @contextmanager
+    def limit(cls, seconds: int):
+        assert seconds >= 1, "Timeout must be at least 1 second !"
+
+        def signal_handler(signum, frame):
+            raise Timeout("Timed out!")
+
+        signal.signal(signal.SIGALRM, signal_handler)
+        signal.alarm(seconds)
+        try:
+            yield
+        finally:
+            signal.alarm(0)
