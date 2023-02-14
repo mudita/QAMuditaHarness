@@ -13,6 +13,9 @@ NewContactEntry = {
     "numbers": [
         ""
     ],
+    "numbersIDs": [
+        ""
+    ],
     "speedDial": "",
     "priName":   "",
     "note":      ""
