@@ -15,7 +15,8 @@ endpoint = {
     "events": 10,
     "developerMode": 11,
     "bluetooth": 12,
-    "usbSecurity": 13
+    "usbSecurity": 13,
+    "phoneNumber": 15
 }
 
 
@@ -35,6 +36,7 @@ class Endpoint(Enum):
     BLUETOOTH = 12
     USBSECURITY = 13
     OUTBOX = 14
+    PHONENUMBER = 15
 
 
 class FileType(Enum):
